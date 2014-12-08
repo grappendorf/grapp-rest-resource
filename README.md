@@ -27,3 +27,10 @@ Attributes
     - *type:* object binding
 
     Bind the REST ressource object to an object that can be passed around.
+
+Events
+------
+
+  * **grapp-authentication-error**
+
+    Is fired when a REST API call returns a 401 error.
