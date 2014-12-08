@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>grapp-rest-resource web component</title>
+
+  <script src="lib/webcomponentsjs/webcomponents.min.js"></script>
+  <link href="grapp-rest-resource.html" rel="import">
+
+</head>
+
+<body>
+
+  <h1>grapp-rest-resource web component</h1>
+
+  <h2>A web component that encapsulates REST API calls</h2>
+
+  <p>
+    <a href="test/index.html">Click here to run the tests...</a>
+  </p>
+  <p>
+    <a href="README.md">Click here to read the documentation...</a>
+  </p>
+  <p>
+    <a href="CHANGELOG.md">Click here to read the changelog...</a>
+  </p>
+
+  <h2>Demo</h2>
+
+  <polymer-element name="demo-element">
+    <template>
+
+      <grapp-rest-resource id="data" url="example.json"></grapp-rest-resource>
+
+      <template repeat="{{item in data}}">
+        <p>
+          {{item.name}}: {{item.role}}
+        </p>
+      </template>
+
+    </template>
+
+    <script>
+      Polymer('demo-element', {
+        ready: function() {
+          this.$.data.resource.index((function(result) {
+            this.data = result;
+          }).bind(this));
+        }
+      });
+    </script>
+  </polymer-element>
+
+  <demo-element></demo-element>
+
+  <script src="//localhost:35729/livereload.js"></script>
+
+</body>

@@ -1,0 +1,43 @@
+{
+  "name": "grapp-rest-resource",
+  "description": "A web component that encapsulates REST API calls",
+  "version": "0.0.0",
+  "main": "grapp-rest-resource.html",
+  "license": "MIT",
+  "ignore": [
+    "bin",
+    "build",
+    "lib",
+    "node_modules",
+    "src",
+    "test",
+    "tmpl",
+    "package.json",
+    "**/.*",
+    "**/*.log",
+    "**/*.sublime-*"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "coyoho",
+    "grappendorf"
+  ],
+  "authors": [
+    "Dirk Grappendorf <dirk@grappendorf.net> (http://www.grappendorf.net)"
+  ],
+  "homepage": "https://github.com/grappendorf/grapp-rest-resource",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/grappendorf/grapp-rest-resource.git"
+  },
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.1",
+    "core-ajax": "Polymer/core-ajax#~0.5.1"
+  },
+  "devDependencies": {
+    "coffee-script": "latest",
+    "jquery": "latest",
+    "web-component-tester": "Polymer/web-component-tester#latest"
+  }
+}

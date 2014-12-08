@@ -1,0 +1,190 @@
+ 
+<!--
+Copyright (c) 2014 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
+This code may only be used under the MIT style license found in the file LICENSE.txt.
+
+Element: grapp-rest-resource
+Version: 0.0.0
+Description: A web component that encapsulates REST API calls
+-->
+
+
+<link href="../core-ajax/core-xhr.html" rel="import">
+
+<polymer-element name="grapp-rest-resource" attributes="url params resource">
+
+  <template>
+
+    <core-xhr id="xhr"></core-xhr>
+
+  </template>
+
+<script type="text/javascript">(function() {
+  var prepareUrl;
+
+  prepareUrl = function(url, params, id, action) {
+    var name, value;
+    if (params == null) {
+      params = {};
+    }
+    if (id == null) {
+      id = null;
+    }
+    if (action == null) {
+      action = null;
+    }
+    if (typeof params === 'string') {
+      params = JSON.parse(params);
+    }
+    for (name in params) {
+      value = params[name];
+      url = url.replace(":" + name, value);
+    }
+    url = url.replace(':id', id || '');
+    url = url.replace(/\/\/+/, '/');
+    url = url.replace(/\/$/, '');
+    if (action) {
+      url += "/" + action;
+    }
+    return url;
+  };
+
+  Polymer('grapp-rest-resource', {
+    created: function() {
+      var self;
+      this.url = '';
+      this.params = null;
+      self = this;
+      return this.resource = {
+        index: function(success, error) {
+          return self.$.xhr.request({
+            url: prepareUrl(self.url, self.params),
+            headers: {
+              'Accept': 'application/json'
+            },
+            callback: function(data, response) {
+              var json;
+              json = (data.trim() !== '' ? JSON.parse(data) : {});
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success(json) : void 0;
+                case 401:
+                  return self.fire('authentication-error');
+                default:
+                  return typeof error === "function" ? error(json) : void 0;
+              }
+            }
+          });
+        },
+        show: function(id, success, error) {
+          return self.$.xhr.request({
+            url: prepareUrl(self.url, self.params, id),
+            headers: {
+              'Accept': 'application/json'
+            },
+            callback: function(data, response) {
+              var json;
+              json = (data.trim() !== '' ? JSON.parse(data) : {});
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success(json) : void 0;
+                case 401:
+                  return self.fire('authentication-error');
+                default:
+                  return typeof error === "function" ? error(json) : void 0;
+              }
+            }
+          });
+        },
+        update: function(id, data, success, error) {
+          return self.$.xhr.request({
+            method: 'PUT',
+            url: prepareUrl(self.url, self.params, id),
+            headers: {
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data),
+            callback: function(data, response) {
+              var json;
+              json = (data.trim() !== '' ? JSON.parse(data) : {});
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success(json) : void 0;
+                case 401:
+                  return self.fire('authentication-error');
+                default:
+                  return typeof error === "function" ? error(json) : void 0;
+              }
+            }
+          });
+        },
+        create: function(data, success, error) {
+          return self.$.xhr.request({
+            method: 'POST',
+            url: prepareUrl(self.url, self.params),
+            headers: {
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data),
+            callback: function(data, response) {
+              var json;
+              json = (data.trim() !== '' ? JSON.parse(data) : {});
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success(json) : void 0;
+                case 401:
+                  return self.fire('authentication-error');
+                default:
+                  return typeof error === "function" ? error(json) : void 0;
+              }
+            }
+          });
+        },
+        "delete": function(id, success, error) {
+          return self.$.xhr.request({
+            method: 'DELETE',
+            url: prepareUrl(self.url, self.params, id),
+            headers: {
+              'Accept': 'application/json'
+            },
+            callback: function(data, response) {
+              var json;
+              json = (data.trim() !== '' ? JSON.parse(data) : {});
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success(json) : void 0;
+                case 401:
+                  return self.fire('authentication-error');
+                default:
+                  return typeof error === "function" ? error(json) : void 0;
+              }
+            }
+          });
+        },
+        memberAction: function(id, action, success, error) {
+          return self.$.xhr.request({
+            method: 'PUT',
+            url: prepareUrl(self.url, self.params, id, action),
+            headers: {
+              'Accept': 'application/json'
+            },
+            callback: function(data, response) {
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success() : void 0;
+                case 401:
+                  return self.fire('authentication-error');
+                default:
+                  return typeof error === "function" ? error() : void 0;
+              }
+            }
+          });
+        }
+      };
+    }
+  });
+
+}).call(this);
+</script>
+
+</polymer-element>

@@ -1,0 +1,24 @@
+ <!-- build:process -->
+<!--
+<%= copyright %>
+Element: <%= pkg.name %>
+Version: <%= pkg.version %>
+Description: <%= pkg.description %>
+-->
+<!-- /build -->
+
+<link href="../core-ajax/core-xhr.html" rel="import">
+
+<polymer-element name="grapp-rest-resource" attributes="url params resource">
+
+  <template>
+
+    <core-xhr id="xhr"></core-xhr>
+
+  </template>
+
+  <!-- build:script inline dist -->
+  <script src="grapp-rest-resource.js"></script>
+  <!-- /build -->
+
+</polymer-element>
