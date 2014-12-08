@@ -3,7 +3,8 @@ prepareUrl = (url, params = {}, id = null, action = null) ->
   for name, value of params
     url = url.replace ":#{name}", value
   url = url.replace ':id', id || ''
-  url = url.replace /\/\/+/, '/'
+  url = url.replace /\/\/+/g, '/'
+  url = url.replace /^(\w+):\//, '$1://'
   url = url.replace /\/$/, ''
   if action
     url += "/#{action}"

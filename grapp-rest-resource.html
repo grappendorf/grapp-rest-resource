@@ -41,7 +41,8 @@ Description: A web component that encapsulates REST API calls
       url = url.replace(":" + name, value);
     }
     url = url.replace(':id', id || '');
-    url = url.replace(/\/\/+/, '/');
+    url = url.replace(/\/\/+/g, '/');
+    url = url.replace(/^(\w+):\//, '$1://');
     url = url.replace(/\/$/, '');
     if (action) {
       url += "/" + action;
