@@ -4,7 +4,7 @@ Copyright (c) 2014 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
 This code may only be used under the MIT style license found in the file LICENSE.txt.
 
 Element: grapp-rest-resource
-Version: 0.0.1
+Version: 0.0.2
 Description: A web component that encapsulates REST API calls
 -->
 
@@ -69,7 +69,7 @@ Description: A web component that encapsulates REST API calls
                 case 200:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
-                  return self.fire('authentication-error');
+                  return self.fire('grapp-authentication-error');
                 default:
                   return typeof error === "function" ? error(json) : void 0;
               }
@@ -89,7 +89,7 @@ Description: A web component that encapsulates REST API calls
                 case 200:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
-                  return self.fire('authentication-error');
+                  return self.fire('grapp-authentication-error');
                 default:
                   return typeof error === "function" ? error(json) : void 0;
               }
@@ -111,7 +111,7 @@ Description: A web component that encapsulates REST API calls
                 case 200:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
-                  return self.fire('authentication-error');
+                  return self.fire('grapp-authentication-error');
                 default:
                   return typeof error === "function" ? error(json) : void 0;
               }
@@ -133,7 +133,7 @@ Description: A web component that encapsulates REST API calls
                 case 200:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
-                  return self.fire('authentication-error');
+                  return self.fire('grapp-authentication-error');
                 default:
                   return typeof error === "function" ? error(json) : void 0;
               }
@@ -154,7 +154,7 @@ Description: A web component that encapsulates REST API calls
                 case 200:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
-                  return self.fire('authentication-error');
+                  return self.fire('grapp-authentication-error');
                 default:
                   return typeof error === "function" ? error(json) : void 0;
               }
@@ -173,7 +173,7 @@ Description: A web component that encapsulates REST API calls
                 case 200:
                   return typeof success === "function" ? success() : void 0;
                 case 401:
-                  return self.fire('authentication-error');
+                  return self.fire('grapp-authentication-error');
                 default:
                   return typeof error === "function" ? error() : void 0;
               }
