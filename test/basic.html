@@ -15,6 +15,9 @@
 
   <grapp-rest-resource id="element" url="data.json"></grapp-rest-resource>
 
+  <grapp-rest-resource id="element_with_special_url" url="data.json"
+    indexUrl="special_data.json"></grapp-rest-resource>
+
   <script type="text/coffeescript">
 
     describe 'GET /resource', ->
@@ -23,6 +26,14 @@
         element = document.querySelector '#element'
         element.resource.index (result) ->
           expect(result).to.eql [1, 2, 3]
+          done()
+
+    describe 'when a special URL is defined for a method', ->
+
+      it 'accesses the special URL', (done) ->
+        element = document.querySelector '#element_with_special_url'
+        element.resource.index (result) ->
+          expect(result).to.eql [42]
           done()
 
   </script>

@@ -14,14 +14,12 @@ prepareUrl = (url, params = {}, id = null, action = null) ->
 Polymer 'grapp-rest-resource',
 
   created: ->
-    @url = ''
-    @params = null
     self = @
 
     @resource =
       index: (success, error) ->
         self.$.xhr.request
-          url: prepareUrl self.url, self.params
+          url: prepareUrl self.indexUrl || self.url, self.params
           headers: {'Accept': 'application/json'}
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
@@ -33,7 +31,7 @@ Polymer 'grapp-rest-resource',
 
       show: (id, success, error) ->
         self.$.xhr.request
-          url: prepareUrl self.url, self.params, id
+          url: prepareUrl self.showUrl || self.url, self.params, id
           headers: {'Accept': 'application/json'}
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
@@ -46,7 +44,7 @@ Polymer 'grapp-rest-resource',
       update: (id, data, success, error) ->
         self.$.xhr.request
           method: 'PUT'
-          url: prepareUrl self.url, self.params, id
+          url: prepareUrl self.updateUrl || self.url, self.params, id
           headers: {'Accept': 'application/json'}
           body: JSON.stringify data
           callback: (data, response) ->
@@ -60,7 +58,7 @@ Polymer 'grapp-rest-resource',
       create: (data, success, error) ->
         self.$.xhr.request
           method: 'POST'
-          url: prepareUrl self.url, self.params
+          url: prepareUrl self.createUrl || self.url, self.params
           headers: {'Accept': 'application/json'}
           body: JSON.stringify data
           callback: (data, response) ->
@@ -74,7 +72,7 @@ Polymer 'grapp-rest-resource',
       delete: (id, success, error) ->
         self.$.xhr.request
           method: 'DELETE'
-          url: prepareUrl self.url, self.params, id
+          url: prepareUrl self.deleteUrl || self.url, self.params, id
           headers: {'Accept': 'application/json'}
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
@@ -87,7 +85,7 @@ Polymer 'grapp-rest-resource',
       memberAction: (id, action, success, error) ->
         self.$.xhr.request
           method: 'PUT'
-          url: prepareUrl self.url, self.params, id, action
+          url: prepareUrl self.memberUrl || self.url, self.params, id, action
           headers: {'Accept': 'application/json'}
           callback: (data, response) ->
             switch response.status

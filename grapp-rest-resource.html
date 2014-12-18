@@ -4,14 +4,15 @@ Copyright (c) 2014 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
 This code may only be used under the MIT style license found in the file LICENSE.txt.
 
 Element: grapp-rest-resource
-Version: 0.0.3
+Version: 0.0.4
 Description: A web component that encapsulates REST API calls
 -->
 
 
 <link href="../core-ajax/core-xhr.html" rel="import">
 
-<polymer-element name="grapp-rest-resource" attributes="url params resource">
+<polymer-element name="grapp-rest-resource"
+  attributes="url params resource indexUrl showUrl updateUrl createUrl deleteUrl memberUrl">
 
   <template>
 
@@ -53,13 +54,11 @@ Description: A web component that encapsulates REST API calls
   Polymer('grapp-rest-resource', {
     created: function() {
       var self;
-      this.url = '';
-      this.params = null;
       self = this;
       return this.resource = {
         index: function(success, error) {
           return self.$.xhr.request({
-            url: prepareUrl(self.url, self.params),
+            url: prepareUrl(self.indexUrl || self.url, self.params),
             headers: {
               'Accept': 'application/json'
             },
@@ -79,7 +78,7 @@ Description: A web component that encapsulates REST API calls
         },
         show: function(id, success, error) {
           return self.$.xhr.request({
-            url: prepareUrl(self.url, self.params, id),
+            url: prepareUrl(self.showUrl || self.url, self.params, id),
             headers: {
               'Accept': 'application/json'
             },
@@ -100,7 +99,7 @@ Description: A web component that encapsulates REST API calls
         update: function(id, data, success, error) {
           return self.$.xhr.request({
             method: 'PUT',
-            url: prepareUrl(self.url, self.params, id),
+            url: prepareUrl(self.updateUrl || self.url, self.params, id),
             headers: {
               'Accept': 'application/json'
             },
@@ -122,7 +121,7 @@ Description: A web component that encapsulates REST API calls
         create: function(data, success, error) {
           return self.$.xhr.request({
             method: 'POST',
-            url: prepareUrl(self.url, self.params),
+            url: prepareUrl(self.createUrl || self.url, self.params),
             headers: {
               'Accept': 'application/json'
             },
@@ -144,7 +143,7 @@ Description: A web component that encapsulates REST API calls
         "delete": function(id, success, error) {
           return self.$.xhr.request({
             method: 'DELETE',
-            url: prepareUrl(self.url, self.params, id),
+            url: prepareUrl(self.deleteUrl || self.url, self.params, id),
             headers: {
               'Accept': 'application/json'
             },
@@ -165,7 +164,7 @@ Description: A web component that encapsulates REST API calls
         memberAction: function(id, action, success, error) {
           return self.$.xhr.request({
             method: 'PUT',
-            url: prepareUrl(self.url, self.params, id, action),
+            url: prepareUrl(self.memberUrl || self.url, self.params, id, action),
             headers: {
               'Accept': 'application/json'
             },

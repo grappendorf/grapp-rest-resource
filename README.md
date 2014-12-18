@@ -28,6 +28,43 @@ Attributes
 
     Bind the REST ressource object to an object that can be passed around.
 
+  * **indexUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "GET /resources" requests.
+
+  * **showUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "GET /resources/:id" requests.
+
+  * **createUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "POST /resources" requests.
+
+  * **updateUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "PUT /resources/:id" requests.
+
+  * **deleteUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "DELETE /resources/:id" requests.
+
+  * **memberUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "PUT /resources/:id/action" requests.
+
+
 Events
 ------
 
