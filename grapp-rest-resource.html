@@ -12,7 +12,7 @@ Description: A web component that encapsulates REST API calls
 <link href="../core-ajax/core-xhr.html" rel="import">
 
 <polymer-element name="grapp-rest-resource"
-  attributes="url params resource indexUrl showUrl updateUrl createUrl deleteUrl memberUrl">
+  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl deleteUrl memberUrl">
 
   <template>
 
@@ -96,14 +96,12 @@ Description: A web component that encapsulates REST API calls
             }
           });
         },
-        update: function(id, data, success, error) {
+        "new": function(success, error) {
           return self.$.xhr.request({
-            method: 'PUT',
-            url: prepareUrl(self.updateUrl || self.url, self.params, id),
+            url: prepareUrl(self.newUrl || self.url, self.params, null, 'new'),
             headers: {
               'Accept': 'application/json'
             },
-            body: JSON.stringify(data),
             callback: function(data, response) {
               var json;
               json = (data.trim() !== '' ? JSON.parse(data) : {});
@@ -122,6 +120,28 @@ Description: A web component that encapsulates REST API calls
           return self.$.xhr.request({
             method: 'POST',
             url: prepareUrl(self.createUrl || self.url, self.params),
+            headers: {
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(data),
+            callback: function(data, response) {
+              var json;
+              json = (data.trim() !== '' ? JSON.parse(data) : {});
+              switch (response.status) {
+                case 200:
+                  return typeof success === "function" ? success(json) : void 0;
+                case 401:
+                  return self.fire('grapp-authentication-error');
+                default:
+                  return typeof error === "function" ? error(json) : void 0;
+              }
+            }
+          });
+        },
+        update: function(id, data, success, error) {
+          return self.$.xhr.request({
+            method: 'PUT',
+            url: prepareUrl(self.updateUrl || self.url, self.params, id),
             headers: {
               'Accept': 'application/json'
             },

@@ -41,12 +41,10 @@ Polymer 'grapp-rest-resource',
               else
                 error? json
 
-      update: (id, data, success, error) ->
+      new: (success, error) ->
         self.$.xhr.request
-          method: 'PUT'
-          url: prepareUrl self.updateUrl || self.url, self.params, id
+          url: prepareUrl self.newUrl || self.url, self.params, null, 'new'
           headers: {'Accept': 'application/json'}
-          body: JSON.stringify data
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
@@ -59,6 +57,20 @@ Polymer 'grapp-rest-resource',
         self.$.xhr.request
           method: 'POST'
           url: prepareUrl self.createUrl || self.url, self.params
+          headers: {'Accept': 'application/json'}
+          body: JSON.stringify data
+          callback: (data, response) ->
+            json = (if data.trim() != '' then JSON.parse data else {})
+            switch response.status
+              when 200 then success? json
+              when 401 then self.fire 'grapp-authentication-error'
+              else
+                error? json
+
+      update: (id, data, success, error) ->
+        self.$.xhr.request
+          method: 'PUT'
+          url: prepareUrl self.updateUrl || self.url, self.params, id
           headers: {'Accept': 'application/json'}
           body: JSON.stringify data
           callback: (data, response) ->

@@ -14,6 +14,18 @@ Attributes
 
     `url="/users/:userId?q={{searchText}}"`
 
+    Default URLS:
+
+    Method        | HTTP method | URL
+    ------------- | ----------- | ---
+    index         | GET         | /users
+    show          | GET         | /users/1
+    new           | GET         | /users/new
+    create        | POST        | /users
+    update        | PUT         | /users
+    delete        | DELETE      | /users/1
+    member foo    | PUT         | /users/1/foo
+
   * **params**
 
     - *type:* hash
@@ -35,6 +47,12 @@ Attributes
     Use this URL instead of the default one for "GET /resources" requests.
 
   * **showUrl**
+
+    - *type:* string
+
+    Use this URL instead of the default one for "GET /resources/:id" requests.
+
+  * **newUrl**
 
     - *type:* string
 
@@ -71,3 +89,40 @@ Events
   * **grapp-authentication-error**
 
     Is fired when a REST API call returns a 401 error.
+
+
+Resource Object methods
+-----------------------
+
+  * **index(successCallback, errorCallback)**
+
+    Performs a HTTP GET on the index URL and returns the response data.
+
+  * **show(id, successCallback, errorCallback)**
+
+    Performs a HTTP GET on the show URL with the specified resource id and returns the response
+    data.
+
+  * **new(successCallback, errorCallback)**
+
+    Performs a HTTP GET on the new URL and returns the response data.
+
+  * **create(data, successCallback, errorCallback)**
+
+    Performs a HTTP POST on the create URL with the specified resource data and returns
+    the response data.
+
+  * **update(id, data, successCallback, errorCallback)**
+
+    Performs a HTTP PUT on the update URL with the specified resource id and data and returns
+    the response data.
+
+  * **delete(id, successCallback, errorCallback)**
+
+    Performs a HTTP DELETE on the delete URL with the specified resource id and returns the response
+    data.
+
+  * **memberAction(id, action, successCallback, errorCallback)**
+
+    Performs a HTTP PUT on the member URL with "/action" appended to it and the specified resource
+    id and returns the response data.
