@@ -1,3 +1,12 @@
+<a name="0.0.5"></a>
+### 0.0.5 (2014-12-19)
+
+
+#### Features
+
+* Add new method (GET /resource/new) doc: Add resource object method documentation ([0bb1c9ff](http://github.com/grappendorf/grapp-rest-resource/commit/0bb1c9ff2568bcce8058b0ec69bc8a8fa466265b))
+
+
 <a name="0.0.4"></a>
 ### 0.0.4 (2014-12-18)
 
