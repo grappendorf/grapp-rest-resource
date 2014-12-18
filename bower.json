@@ -1,7 +1,7 @@
 {
   "name": "grapp-rest-resource",
   "description": "A web component that encapsulates REST API calls",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "grapp-rest-resource.html",
   "license": "MIT",
   "ignore": [

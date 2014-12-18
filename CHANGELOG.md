@@ -1,3 +1,12 @@
+<a name="0.0.4"></a>
+### 0.0.4 (2014-12-18)
+
+
+#### Features
+
+* Allow a special URL for each HTTP method ([83650cc0](http://github.com/grappendorf/grapp-rest-resource/commit/83650cc09a67f737b6d13747a8c0db15337654c6))
+
+
 <a name="0.0.3"></a>
 ### 0.0.3 (2014-12-08)
 
