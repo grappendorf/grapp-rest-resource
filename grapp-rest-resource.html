@@ -1,6 +1,6 @@
  
 <!--
-Copyright (c) 2014 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
+Copyright (c) 2014-2015 Dirk Grappendorf, www.grappendorf.net. All rights reserved.
 This code may only be used under the MIT style license found in the file LICENSE.txt.
 
 Element: grapp-rest-resource
@@ -12,7 +12,7 @@ Description: A web component that encapsulates REST API calls
 <link href="../core-ajax/core-xhr.html" rel="import">
 
 <polymer-element name="grapp-rest-resource"
-  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl deleteUrl memberUrl">
+  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl deleteUrl memberUrl headers">
 
   <template>
 
@@ -54,14 +54,13 @@ Description: A web component that encapsulates REST API calls
   Polymer('grapp-rest-resource', {
     created: function() {
       var self;
+      this.headers = {};
       self = this;
       return this.resource = {
         index: function(success, error) {
           return self.$.xhr.request({
             url: prepareUrl(self.indexUrl || self.url, self.params),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             callback: function(data, response) {
               var json;
               json = (data.trim() !== '' ? JSON.parse(data) : {});
@@ -79,9 +78,7 @@ Description: A web component that encapsulates REST API calls
         show: function(id, success, error) {
           return self.$.xhr.request({
             url: prepareUrl(self.showUrl || self.url, self.params, id),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             callback: function(data, response) {
               var json;
               json = (data.trim() !== '' ? JSON.parse(data) : {});
@@ -99,9 +96,7 @@ Description: A web component that encapsulates REST API calls
         "new": function(success, error) {
           return self.$.xhr.request({
             url: prepareUrl(self.newUrl || self.url, self.params, null, 'new'),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             callback: function(data, response) {
               var json;
               json = (data.trim() !== '' ? JSON.parse(data) : {});
@@ -120,9 +115,7 @@ Description: A web component that encapsulates REST API calls
           return self.$.xhr.request({
             method: 'POST',
             url: prepareUrl(self.createUrl || self.url, self.params),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             body: JSON.stringify(data),
             callback: function(data, response) {
               var json;
@@ -142,9 +135,7 @@ Description: A web component that encapsulates REST API calls
           return self.$.xhr.request({
             method: 'PUT',
             url: prepareUrl(self.updateUrl || self.url, self.params, id),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             body: JSON.stringify(data),
             callback: function(data, response) {
               var json;
@@ -164,9 +155,7 @@ Description: A web component that encapsulates REST API calls
           return self.$.xhr.request({
             method: 'DELETE',
             url: prepareUrl(self.deleteUrl || self.url, self.params, id),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             callback: function(data, response) {
               var json;
               json = (data.trim() !== '' ? JSON.parse(data) : {});
@@ -185,9 +174,7 @@ Description: A web component that encapsulates REST API calls
           return self.$.xhr.request({
             method: 'PUT',
             url: prepareUrl(self.memberUrl || self.url, self.params, id, action),
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: self.prepareHeaders(),
             callback: function(data, response) {
               switch (response.status) {
                 case 200:
@@ -201,6 +188,19 @@ Description: A web component that encapsulates REST API calls
           });
         }
       };
+    },
+    prepareHeaders: function() {
+      var h, key, val, _ref;
+      h = {
+        'Accept': 'application/json'
+      };
+      _ref = this.headers;
+      for (key in _ref) {
+        val = _ref[key];
+        h[key] = val;
+      }
+      console.log(h);
+      return h;
     }
   });
 

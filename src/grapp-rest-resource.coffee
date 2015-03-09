@@ -14,13 +14,14 @@ prepareUrl = (url, params = {}, id = null, action = null) ->
 Polymer 'grapp-rest-resource',
 
   created: ->
+    @headers = {}
     self = @
 
     @resource =
       index: (success, error) ->
         self.$.xhr.request
           url: prepareUrl self.indexUrl || self.url, self.params
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
@@ -32,7 +33,7 @@ Polymer 'grapp-rest-resource',
       show: (id, success, error) ->
         self.$.xhr.request
           url: prepareUrl self.showUrl || self.url, self.params, id
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
@@ -44,7 +45,7 @@ Polymer 'grapp-rest-resource',
       new: (success, error) ->
         self.$.xhr.request
           url: prepareUrl self.newUrl || self.url, self.params, null, 'new'
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
@@ -57,7 +58,7 @@ Polymer 'grapp-rest-resource',
         self.$.xhr.request
           method: 'POST'
           url: prepareUrl self.createUrl || self.url, self.params
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           body: JSON.stringify data
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
@@ -71,7 +72,7 @@ Polymer 'grapp-rest-resource',
         self.$.xhr.request
           method: 'PUT'
           url: prepareUrl self.updateUrl || self.url, self.params, id
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           body: JSON.stringify data
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
@@ -85,7 +86,7 @@ Polymer 'grapp-rest-resource',
         self.$.xhr.request
           method: 'DELETE'
           url: prepareUrl self.deleteUrl || self.url, self.params, id
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
@@ -98,10 +99,17 @@ Polymer 'grapp-rest-resource',
         self.$.xhr.request
           method: 'PUT'
           url: prepareUrl self.memberUrl || self.url, self.params, id, action
-          headers: {'Accept': 'application/json'}
+          headers: self.prepareHeaders()
           callback: (data, response) ->
             switch response.status
               when 200 then success?()
               when 401 then self.fire 'grapp-authentication-error'
               else
                 error?()
+
+  prepareHeaders: ->
+    h = {'Accept': 'application/json'}
+    for key, val of @headers
+      h[key] = val
+    console.log h
+    h
