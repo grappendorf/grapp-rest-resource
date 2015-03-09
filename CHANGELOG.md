@@ -1,3 +1,12 @@
+<a name="0.0.6"></a>
+### 0.0.6 (2015-03-09)
+
+
+#### Features
+
+* Allow additional headers to be sent with each request ([67423183](http://github.com/grappendorf/grapp-rest-resource/commit/6742318323b1616579ef9acd6e7caba21b384b6c))
+
+
 <a name="0.0.5"></a>
 ### 0.0.5 (2014-12-19)
 
