@@ -1,3 +1,12 @@
+<a name="0.0.7"></a>
+### 0.0.7 (2015-03-09)
+
+
+#### Bug Fixes
+
+* Remove debug message ([d606ebf6](http://github.com/grappendorf/grapp-rest-resource/commit/d606ebf654f4d932e14e8f05f71802e98e01d09a))
+
+
 <a name="0.0.6"></a>
 ### 0.0.6 (2015-03-09)
 
