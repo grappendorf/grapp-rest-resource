@@ -111,5 +111,4 @@ Polymer 'grapp-rest-resource',
     h = {'Accept': 'application/json'}
     for key, val of @headers
       h[key] = val
-    console.log h
     h
