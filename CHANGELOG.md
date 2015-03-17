@@ -1,3 +1,12 @@
+<a name="0.0.8"></a>
+### 0.0.8 (2015-03-17)
+
+
+#### Features
+
+* Add a 'token' attribute for passing an authorization header with the HTTP reques ([86dd8248](http://github.com/grappendorf/grapp-rest-resource/commit/86dd82483802b27f87c4d8b4cd555d0198ab9a88))
+
+
 <a name="0.0.7"></a>
 ### 0.0.7 (2015-03-09)
 
