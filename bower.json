@@ -38,6 +38,6 @@
   "devDependencies": {
     "coffee-script": "latest",
     "jquery": "latest",
-    "web-component-tester": "Polymer/web-component-tester#latest"
+    "web-component-tester": "Polymer/web-component-tester#2.2.6"
   }
 }

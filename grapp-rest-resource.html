@@ -12,7 +12,7 @@ Description: A web component that encapsulates REST API calls
 <link href="../core-ajax/core-xhr.html" rel="import">
 
 <polymer-element name="grapp-rest-resource"
-  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl deleteUrl memberUrl headers">
+  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl deleteUrl memberUrl headers token">
 
   <template>
 
@@ -198,6 +198,9 @@ Description: A web component that encapsulates REST API calls
       for (key in _ref) {
         val = _ref[key];
         h[key] = val;
+      }
+      if (this.token) {
+        h['Authorization'] = this.token;
       }
       return h;
     }

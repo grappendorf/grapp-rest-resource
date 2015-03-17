@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>grapp-rest-resource headers tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <script src="../lib/web-component-tester/browser.js"></script>
+  <script src="../lib/coffee-script/extras/coffee-script.js"></script>
+
+  <link href="../grapp-rest-resource.html" rel="import">
+</head>
+<body>
+
+  <grapp-rest-resource id="element_with_headers" url="http://api.example.com"
+    headers='{"foo":123}'></grapp-rest-resource>
+
+  <grapp-rest-resource id="element_with_token" url="http://api.example.com"
+    token="JWT"></grapp-rest-resource>
+
+  <script type="text/coffeescript">
+
+    describe 'with defined hedaers attribute ', ->
+
+      it 'sends the custom headers', ->
+        element = document.querySelector '#element_with_headers'
+        xhr_request = sinon.stub element.$.xhr, 'request'
+        element.resource.index()
+        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {foo: 123}}
+
+    describe 'with defined token attribute ', ->
+
+      it 'sends the an authorization header', ->
+        element = document.querySelector '#element_with_token'
+        xhr_request = sinon.stub element.$.xhr, 'request'
+        element.resource.index()
+        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {Authorization: 'JWT'}}
+
+  </script>
+
+  <script>
+  </script>
+
+</body>
+</html>

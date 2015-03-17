@@ -82,6 +82,18 @@ Attributes
 
     Use this URL instead of the default one for "PUT /resources/:id/action" requests.
 
+  * **headers**
+
+    - *type:* object
+
+    Set additional headers on the request.
+
+  * ** token**
+
+    - *type:* string
+
+    Set an authorization header with the specified token text.
+
 
 Events
 ------
