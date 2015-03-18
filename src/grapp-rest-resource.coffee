@@ -63,7 +63,7 @@ Polymer 'grapp-rest-resource',
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
-              when 200 then success? json
+              when 200, 201, 204 then success? json
               when 401 then self.fire 'grapp-authentication-error'
               else
                 error? json
@@ -77,7 +77,7 @@ Polymer 'grapp-rest-resource',
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
             switch response.status
-              when 200 then success? json
+              when 200, 201, 204 then success? json
               when 401 then self.fire 'grapp-authentication-error'
               else
                 error? json
