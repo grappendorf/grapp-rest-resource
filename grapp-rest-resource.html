@@ -4,7 +4,7 @@ Copyright (c) 2014-2015 Dirk Grappendorf, www.grappendorf.net. All rights reserv
 This code may only be used under the MIT style license found in the file LICENSE.txt.
 
 Element: grapp-rest-resource
-Version: 0.0.8
+Version: 0.0.9
 Description: A web component that encapsulates REST API calls
 -->
 
@@ -122,6 +122,8 @@ Description: A web component that encapsulates REST API calls
               json = (data.trim() !== '' ? JSON.parse(data) : {});
               switch (response.status) {
                 case 200:
+                case 201:
+                case 204:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
                   return self.fire('grapp-authentication-error');
@@ -142,6 +144,8 @@ Description: A web component that encapsulates REST API calls
               json = (data.trim() !== '' ? JSON.parse(data) : {});
               switch (response.status) {
                 case 200:
+                case 201:
+                case 204:
                   return typeof success === "function" ? success(json) : void 0;
                 case 401:
                   return self.fire('grapp-authentication-error');
