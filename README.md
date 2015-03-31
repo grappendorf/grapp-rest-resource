@@ -23,8 +23,10 @@ Attributes
     new           | GET         | /users/new
     create        | POST        | /users
     update        | PUT         | /users
-    delete        | DELETE      | /users/1
+    destroy       | DELETE      | /users/1
     member foo    | PUT         | /users/1/foo
+    
+    The method names are based on the corresponding controller methods of Ruby on Rails. 
 
   * **params**
 
@@ -70,7 +72,7 @@ Attributes
 
     Use this URL instead of the default one for "PUT /resources/:id" requests.
 
-  * **deleteUrl**
+  * **destroyUrl**
 
     - *type:* string
 
@@ -129,9 +131,9 @@ Resource Object methods
     Performs a HTTP PUT on the update URL with the specified resource id and data and returns
     the response data.
 
-  * **delete(id, successCallback, errorCallback)**
+  * **destroy(id, successCallback, errorCallback)**
 
-    Performs a HTTP DELETE on the delete URL with the specified resource id and returns the response
+    Performs a HTTP DELETE on the destroy URL with the specified resource id and returns the response
     data.
 
   * **memberAction(id, action, successCallback, errorCallback)**

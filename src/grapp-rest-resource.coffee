@@ -82,10 +82,10 @@ Polymer 'grapp-rest-resource',
               else
                 error? json
 
-      delete: (id, success, error) ->
+      destroy: (id, success, error) ->
         self.$.xhr.request
           method: 'DELETE'
-          url: prepareUrl self.deleteUrl || self.url, self.params, id
+          url: prepareUrl self.destroyUrl || self.url, self.params, id
           headers: self.prepareHeaders()
           callback: (data, response) ->
             json = (if data.trim() != '' then JSON.parse data else {})
