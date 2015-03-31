@@ -4,7 +4,7 @@ Copyright (c) 2014-2015 Dirk Grappendorf, www.grappendorf.net. All rights reserv
 This code may only be used under the MIT style license found in the file LICENSE.txt.
 
 Element: grapp-rest-resource
-Version: 0.0.9
+Version: 0.0.10
 Description: A web component that encapsulates REST API calls
 -->
 
@@ -12,7 +12,7 @@ Description: A web component that encapsulates REST API calls
 <link href="../core-ajax/core-xhr.html" rel="import">
 
 <polymer-element name="grapp-rest-resource"
-  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl deleteUrl memberUrl headers token">
+  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl destroyUrl memberUrl headers token">
 
   <template>
 
@@ -155,10 +155,10 @@ Description: A web component that encapsulates REST API calls
             }
           });
         },
-        "delete": function(id, success, error) {
+        destroy: function(id, success, error) {
           return self.$.xhr.request({
             method: 'DELETE',
-            url: prepareUrl(self.deleteUrl || self.url, self.params, id),
+            url: prepareUrl(self.destroyUrl || self.url, self.params, id),
             headers: self.prepareHeaders(),
             callback: function(data, response) {
               var json;

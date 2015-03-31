@@ -1,3 +1,12 @@
+<a name="0.0.10"></a>
+### 0.0.10 (2015-03-31)
+
+
+#### Bug Fixes
+
+* Rename delete() resource method to destroy() ([171b2803](http://github.com/grappendorf/grapp-rest-resource/commit/171b28031f388063e6ca253e4b4b8ee72baa3eaa))
+
+
 <a name="0.0.9"></a>
 ### 0.0.9 (2015-03-24)
 
