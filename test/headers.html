@@ -6,10 +6,11 @@
   <title>grapp-rest-resource headers tests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
+  <script src='../lib/webcomponentsjs/webcomponents-lite.min.js'></script>
   <script src="../lib/web-component-tester/browser.js"></script>
   <script src="../lib/coffee-script/extras/coffee-script.js"></script>
 
-  <link href="../grapp-rest-resource.html" rel="import">
+  <link href="../build/grapp-rest-resource.html" rel="import">
 </head>
 <body>
 
@@ -25,21 +26,18 @@
 
       it 'sends the custom headers', ->
         element = document.querySelector '#element_with_headers'
-        xhr_request = sinon.stub element.$.xhr, 'request'
+        xhr_request = sinon.stub(element.$.request, 'send').returns new Promise(->)
         element.resource.index()
-        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {foo: 123}}
+        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {Accept: 'application/json', foo: 123}}
 
     describe 'with defined token attribute ', ->
 
       it 'sends the an authorization header', ->
         element = document.querySelector '#element_with_token'
-        xhr_request = sinon.stub element.$.xhr, 'request'
+        xhr_request = sinon.stub(element.$.request, 'send').returns new Promise(->)
         element.resource.index()
         expect(xhr_request).to.have.been.calledWith sinon.match {headers: {Authorization: 'JWT'}}
 
-  </script>
-
-  <script>
   </script>
 
 </body>

@@ -20,7 +20,6 @@
   "keywords": [
     "web-components",
     "polymer",
-    "coyoho",
     "grappendorf"
   ],
   "authors": [
@@ -32,12 +31,12 @@
     "url": "git://github.com/grappendorf/grapp-rest-resource.git"
   },
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.1",
-    "core-ajax": "Polymer/core-ajax#~0.5.1"
+    "polymer": "Polymer/polymer#~1.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.0"
   },
   "devDependencies": {
-    "coffee-script": "latest",
-    "jquery": "latest",
-    "web-component-tester": "Polymer/web-component-tester#2.2.6"
+    "web-component-tester": "Polymer/web-component-tester#3.1.7",
+    "jquery": "2.1.4",
+    "coffee-script": "1.9.3"
   }
 }

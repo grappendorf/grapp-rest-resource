@@ -6,17 +6,18 @@
   <title>grapp-rest-resource basic tests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
+  <script src='../lib/webcomponentsjs/webcomponents-lite.min.js'></script>
   <script src="../lib/web-component-tester/browser.js"></script>
   <script src="../lib/coffee-script/extras/coffee-script.js"></script>
 
-  <link href="../grapp-rest-resource.html" rel="import">
+  <link href="../build/grapp-rest-resource.html" rel="import">
 </head>
 <body>
 
   <grapp-rest-resource id="element" url="data.json" headers='{"foo":123}'></grapp-rest-resource>
 
   <grapp-rest-resource id="element_with_special_url" url="data.json"
-    indexUrl="special_data.json"></grapp-rest-resource>
+    index-url="special_data.json"></grapp-rest-resource>
 
   <script type="text/coffeescript">
 
@@ -36,9 +37,6 @@
           expect(result).to.eql [42]
           done()
 
-  </script>
-
-  <script>
   </script>
 
 </body>

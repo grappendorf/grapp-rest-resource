@@ -3,7 +3,7 @@ grapp-rest-resource
 
 A web component that encapsulates REST API calls.
 
-Attributes
+Properties
 ----------
 
   * **url**

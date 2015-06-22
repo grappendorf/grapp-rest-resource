@@ -7,14 +7,13 @@ Description: <%= pkg.description %>
 -->
 <!-- /build -->
 
-<link href="../core-ajax/core-xhr.html" rel="import">
+<link href="../lib/iron-ajax/iron-request.html" rel="import">
 
-<polymer-element name="grapp-rest-resource"
-  attributes="url params resource indexUrl showUrl newUrl createUrl updateUrl destroyUrl memberUrl headers token">
+<dom-module id="grapp-rest-resource">
 
   <template>
 
-    <core-xhr id="xhr"></core-xhr>
+    <iron-request id="request"></iron-request>
 
   </template>
 
@@ -22,4 +21,4 @@ Description: <%= pkg.description %>
   <script src="grapp-rest-resource.js"></script>
   <!-- /build -->
 
-</polymer-element>
+</dom-module>

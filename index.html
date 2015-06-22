@@ -4,9 +4,8 @@
 <head>
 
   <title>grapp-rest-resource web component</title>
-
-  <script src="lib/webcomponentsjs/webcomponents.min.js"></script>
-  <link href="grapp-rest-resource.html" rel="import">
+  <script src='lib/webcomponentsjs/webcomponents-lite.min.js'></script>
+  <link href="build/grapp-rest-resource.html" rel="import">
 
 </head>
 
@@ -28,21 +27,22 @@
 
   <h2>Demo</h2>
 
-  <polymer-element name="demo-element">
+  <dom-module id="demo-element">
     <template>
 
-      <grapp-rest-resource id="data" url="example.json"></grapp-rest-resource>
+      <grapp-rest-resource id="data" url="test/example.json"></grapp-rest-resource>
 
-      <template repeat="{{item in data}}">
+      <template is="dom-repeat" items="[[data]]">
         <p>
-          {{item.name}}: {{item.role}}
+          <span>{{item.name}}</span>: <span>{{item.role}}</span>
         </p>
       </template>
 
     </template>
 
     <script>
-      Polymer('demo-element', {
+      Polymer({
+        is: 'demo-element',
         ready: function() {
           this.$.data.resource.index((function(result) {
             this.data = result;
@@ -50,7 +50,7 @@
         }
       });
     </script>
-  </polymer-element>
+  </dom-module>
 
   <demo-element></demo-element>
 

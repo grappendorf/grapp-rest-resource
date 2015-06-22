@@ -11,101 +11,116 @@ prepareUrl = (url, params = {}, id = null, action = null) ->
   url
 
 
-Polymer 'grapp-rest-resource',
+Polymer
 
-  created: ->
-    @headers = {}
+  is: 'grapp-rest-resource',
+
+  properties:
+    url: {type: String}
+    params: {type: String}
+    resource: {type: Object}
+    indexUrl: {type: String}
+    showUrl: {type: String}
+    newUrl: {type: String}
+    createUrl: {type: String}
+    updateUrl: {type: String}
+    destroyUrl: {type: String}
+    memberUrl: {type: String}
+    headers: {type: Object, value: {}}
+    token: {type: String}
+
+  ready: ->
     self = @
 
     @resource =
       index: (success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           url: prepareUrl self.indexUrl || self.url, self.params
           headers: self.prepareHeaders()
-          callback: (data, response) ->
-            json = (if data.trim() != '' then JSON.parse data else {})
-            switch response.status
-              when 200 then success? json
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error? json
+        .then (request) ->
+          json = (if request.response.trim() != '' then JSON.parse request.response else {})
+          switch request.xhr.status
+            when 200 then success? json
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error? json
 
       show: (id, success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           url: prepareUrl self.showUrl || self.url, self.params, id
           headers: self.prepareHeaders()
-          callback: (data, response) ->
-            json = (if data.trim() != '' then JSON.parse data else {})
-            switch response.status
-              when 200 then success? json
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error? json
+        .then (request) ->
+          json = (if request.response.trim() != '' then JSON.parse request.response else {})
+          switch request.xhr.status
+            when 200 then success? json
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error? json
 
       new: (success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           url: prepareUrl self.newUrl || self.url, self.params, null, 'new'
           headers: self.prepareHeaders()
-          callback: (data, response) ->
-            json = (if data.trim() != '' then JSON.parse data else {})
-            switch response.status
-              when 200 then success? json
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error? json
+        .then (request) ->
+          json = (if request.response.trim() != '' then JSON.parse request.response else {})
+          switch request.xhr.status
+            when 200 then success? json
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error? json
 
       create: (data, success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           method: 'POST'
           url: prepareUrl self.createUrl || self.url, self.params
           headers: self.prepareHeaders()
           body: JSON.stringify data
-          callback: (data, response) ->
-            json = (if data.trim() != '' then JSON.parse data else {})
-            switch response.status
-              when 200, 201, 204 then success? json
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error? json
+        .then (request) ->
+          json = (if request.response.trim() != '' then JSON.parse request.response else {})
+          switch request.xhr.status
+            when 200, 201, 204 then success? json
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error? json
 
       update: (id, data, success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           method: 'PUT'
           url: prepareUrl self.updateUrl || self.url, self.params, id
           headers: self.prepareHeaders()
           body: JSON.stringify data
-          callback: (data, response) ->
-            json = (if data.trim() != '' then JSON.parse data else {})
-            switch response.status
-              when 200, 201, 204 then success? json
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error? json
+        .then (request) ->
+          json = (if request.response.trim() != '' then JSON.parse request.response else {})
+          switch request.xhr.status
+            when 200, 201, 204 then success? json
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error? json
 
       destroy: (id, success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           method: 'DELETE'
           url: prepareUrl self.destroyUrl || self.url, self.params, id
           headers: self.prepareHeaders()
-          callback: (data, response) ->
-            json = (if data.trim() != '' then JSON.parse data else {})
-            switch response.status
-              when 200 then success? json
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error? json
+        .then (request) ->
+          json = (if request.response.trim() != '' then JSON.parse request.response else {})
+          switch request.xhr.status
+            when 200 then success? json
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error? json
 
       memberAction: (id, action, success, error) ->
-        self.$.xhr.request
+        self.$.request.send
           method: 'PUT'
           url: prepareUrl self.memberUrl || self.url, self.params, id, action
           headers: self.prepareHeaders()
-          callback: (data, response) ->
-            switch response.status
-              when 200 then success?()
-              when 401 then self.fire 'grapp-authentication-error'
-              else
-                error?()
+        .then (request) ->
+          switch request.xhr.status
+            when 200 then success?()
+            when 401 then self.fire 'grapp-authentication-error'
+            else
+              error?()
 
   prepareHeaders: ->
     h = {'Accept': 'application/json'}
