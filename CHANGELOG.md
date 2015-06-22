@@ -1,3 +1,12 @@
+<a name="0.1.0"></a>
+## 0.1.0 (2015-06-22)
+
+
+#### Features
+
+* Upgrade to Polymer 1.0 ([79b51161](http://github.com/grappendorf/grapp-rest-resource/commit/79b511614ac979ed588a8a1380f2e318cfcb4117))
+
+
 <a name="0.0.10"></a>
 ### 0.0.10 (2015-03-31)
 
