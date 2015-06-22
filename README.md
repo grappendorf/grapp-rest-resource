@@ -3,6 +3,8 @@ grapp-rest-resource
 
 A web component that encapsulates REST API calls.
 
+Compatible with Polymer 1.0+
+
 Properties
 ----------
 
@@ -96,14 +98,12 @@ Properties
 
     Set an authorization header with the specified token text.
 
-
 Events
 ------
 
   * **grapp-authentication-error**
 
     Is fired when a REST API call returns a 401 error.
-
 
 Resource Object methods
 -----------------------
