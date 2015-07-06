@@ -18,7 +18,7 @@ Polymer
   properties:
     url: {type: String}
     params: {type: String}
-    resource: {type: Object}
+    resource: {type: Object, notify: true}
     indexUrl: {type: String}
     showUrl: {type: String}
     newUrl: {type: String}
