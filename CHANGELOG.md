@@ -1,3 +1,12 @@
+<a name="0.1.1"></a>
+### 0.1.1 (2015-07-06)
+
+
+#### Bug Fixes
+
+* Notify 'resource' property changes ([c823cf45](http://github.com/grappendorf/grapp-rest-resource/commit/c823cf45e7e5d3088e89ccf91f5f43d58de899a5))
+
+
 <a name="0.1.0"></a>
 ## 0.1.0 (2015-06-22)
 
