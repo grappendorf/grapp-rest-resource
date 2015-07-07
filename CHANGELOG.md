@@ -1,3 +1,12 @@
+<a name="0.1.3"></a>
+### 0.1.3 (2015-07-07)
+
+
+#### Features
+
+* Return promises from resource methods ([f0dc329f](http://github.com/grappendorf/grapp-rest-resource/commit/f0dc329f478a6d4cbc28a8e2ae4128e2c1d658e6))
+
+
 <a name="0.1.2"></a>
 ### 0.1.2 (2015-07-07)
 
