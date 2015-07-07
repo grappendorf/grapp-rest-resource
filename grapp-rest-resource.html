@@ -67,39 +67,53 @@ Description: A web component that encapsulates REST API calls
       var self;
       self = this;
       return this.resource = {
-        index: function(success, error) {
-          return self._sendRequest('GET', self.indexUrl).then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        index: function() {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('GET', self.indexUrl).then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         },
-        show: function(id, success, error) {
-          return self._sendRequest('GET', self.showUrl, id).then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        show: function(id) {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('GET', self.showUrl, id).then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         },
-        "new": function(success, error) {
-          return self._sendRequest('GET', self.newUrl, null, 'new').then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        "new": function() {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('GET', self.newUrl, null, 'new').then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         },
-        create: function(data, success, error) {
-          return self._sendRequest('POST', self.createUrl, null, data).then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        create: function(data) {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('POST', self.createUrl, null, data).then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         },
-        update: function(id, data, success, error) {
-          return self._sendRequest('PUT', self.updateUrl, id, data).then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        update: function(id, data) {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('PUT', self.updateUrl, id, data).then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         },
-        destroy: function(id, success, error) {
-          return self._sendRequest('DELETE', self.destroyUrl, id).then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        destroy: function(id) {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('DELETE', self.destroyUrl, id).then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         },
-        memberAction: function(id, action, success, error) {
-          return self._sendRequest('PUT', self.memberUrl, id, action).then(function(request) {
-            return self._handleResponse(request.response, request.xhr.status, success, error);
+        memberAction: function(id, action) {
+          return new Promise(function(resolve, reject) {
+            return self._sendRequest('PUT', self.memberUrl, id, action).then(function(request) {
+              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+            });
           });
         }
       };
@@ -154,15 +168,25 @@ Description: A web component that encapsulates REST API calls
         body: (data ? JSON.stringify(data) : void 0)
       });
     },
-    _handleResponse: function(response, status, success, error) {
+    _handleResponse: function(response, status, resolve, reject) {
       var json;
       json = (response && response.trim() !== '' ? JSON.parse(response) : {});
       if (status >= 200 && status <= 299) {
-        return typeof success === "function" ? success(json) : void 0;
+        return resolve({
+          data: json,
+          status: status
+        });
       } else if (status === 401) {
-        return self.fire('grapp-authentication-error');
+        self.fire('grapp-authentication-error');
+        return reject({
+          data: json,
+          status: status
+        });
       } else {
-        return typeof error === "function" ? error(json) : void 0;
+        return reject({
+          data: json,
+          status: status
+        });
       }
     }
   });

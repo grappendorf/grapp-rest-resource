@@ -108,35 +108,53 @@ Events
 Resource Object methods
 -----------------------
 
+  In the following 'response object' means
+
+  ```
+  {
+    data: <The response data>,
+    status: <The response status code>
+  }
+  ```
+	
   * **index(successCallback, errorCallback)**
 
-    Performs a HTTP GET on the index URL and returns the response data.
+    Performs a HTTP GET on the index URL and returns a promise that is resolved with a response object.
+
 
   * **show(id, successCallback, errorCallback)**
 
-    Performs a HTTP GET on the show URL with the specified resource id and returns the response
-    data.
+    Performs a HTTP GET on the show URL with the specified resource id and returns a promise that is
+    resolved with a response object.
+
 
   * **new(successCallback, errorCallback)**
 
-    Performs a HTTP GET on the new URL and returns the response data.
+    Performs a HTTP GET on the new URL and returns a promise that is resolved with the a response object.
+
 
   * **create(data, successCallback, errorCallback)**
 
-    Performs a HTTP POST on the create URL with the specified resource data and returns
-    the response data.
+    Performs a HTTP POST on the create URL with the specified resource data and returns a promise that
+    is resolved with a response object.
+
 
   * **update(id, data, successCallback, errorCallback)**
 
-    Performs a HTTP PUT on the update URL with the specified resource id and data and returns
-    the response data.
+    Performs a HTTP PUT on the update URL with the specified resource id and data and returns a promise 
+    that is resolved with a response object.
+
 
   * **destroy(id, successCallback, errorCallback)**
 
-    Performs a HTTP DELETE on the destroy URL with the specified resource id and returns the response
-    data.
+    Performs a HTTP DELETE on the destroy URL with the specified resource id and returns a promise that
+    is resolved with a response object.
+
 
   * **memberAction(id, action, successCallback, errorCallback)**
 
     Performs a HTTP PUT on the member URL with "/action" appended to it and the specified resource
-    id and returns the response data.
+    id and returns a promise that is resolved with a response object.
+
+
+  In case of an HTTP error the promise is rejected with a response object.

@@ -32,7 +32,8 @@
 
       <grapp-rest-resource id="data" url="test/example.json"></grapp-rest-resource>
 
-      <template is="dom-repeat" items="[[data]]">
+      <div>Response code: <span>[[status]]</span></div>
+      <template is="dom-repeat" items="[[items]]">
         <p>
           <span>{{item.name}}</span>: <span>{{item.role}}</span>
         </p>
@@ -44,9 +45,10 @@
       Polymer({
         is: 'demo-element',
         ready: function() {
-          this.$.data.resource.index((function(result) {
-            this.data = result;
-          }).bind(this));
+          this.$.data.resource.index().then(function(response) {
+            this.items = response.data;
+            this.status = response.status;
+          }.bind(this));
         }
       });
     </script>

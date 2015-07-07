@@ -20,33 +20,40 @@ Polymer
     self = @
 
     @resource =
-      index: (success, error) ->
-        self._sendRequest('GET', self.indexUrl).then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      index: ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('GET', self.indexUrl).then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
-      show: (id, success, error) ->
-        self._sendRequest('GET', self.showUrl, id).then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      show: (id) ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('GET', self.showUrl, id).then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
-      new: (success, error) ->
-        self._sendRequest('GET', self.newUrl, null, 'new').then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      new: () ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('GET', self.newUrl, null, 'new').then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
-      create: (data, success, error) ->
-        self._sendRequest('POST', self.createUrl, null, data).then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      create: (data) ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('POST', self.createUrl, null, data).then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
-      update: (id, data, success, error) ->
-        self._sendRequest('PUT', self.updateUrl, id, data).then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      update: (id, data) ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('PUT', self.updateUrl, id, data).then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
-      destroy: (id, success, error) ->
-        self._sendRequest('DELETE', self.destroyUrl, id).then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      destroy: (id) ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('DELETE', self.destroyUrl, id).then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
-      memberAction: (id, action, success, error) ->
-        self._sendRequest('PUT', self.memberUrl, id, action).then (request) ->
-          self._handleResponse request.response, request.xhr.status, success, error
+      memberAction: (id, action) ->
+        new Promise (resolve, reject) ->
+          self._sendRequest('PUT', self.memberUrl, id, action).then (request) ->
+            self._handleResponse request.response, request.xhr.status, resolve, reject
 
   _prepareUrl: (url, params, id, action) ->
     params = JSON.parse(params) if typeof(params) == 'string'
@@ -74,11 +81,12 @@ Polymer
       headers: @_prepareHeaders()
       body: (if data then JSON.stringify data else undefined)
 
-  _handleResponse: (response, status, success, error) ->
+  _handleResponse: (response, status, resolve, reject) ->
     json = (if response && response.trim() != '' then JSON.parse response else {})
     if status >= 200 && status <= 299
-      success? json
+      resolve data: json, status: status
     else if status == 401
       self.fire 'grapp-authentication-error'
+      reject data: json, status: status
     else
-      error? json
+      reject data: json, status: status

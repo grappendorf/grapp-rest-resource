@@ -25,16 +25,16 @@
 
       it 'retrieves all items', (done) ->
         element = document.querySelector '#element'
-        element.resource.index (result) ->
-          expect(result).to.eql [1, 2, 3]
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql [1, 2, 3]
           done()
 
     describe 'when a special URL is defined for a method', ->
 
       it 'accesses the special URL', (done) ->
         element = document.querySelector '#element_with_special_url'
-        element.resource.index (result) ->
-          expect(result).to.eql [42]
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql [42]
           done()
 
   </script>
