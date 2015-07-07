@@ -20,36 +20,6 @@ Description: A web component that encapsulates REST API calls
   </template>
 
 <script type="text/javascript">(function() {
-  var prepareUrl;
-
-  prepareUrl = function(url, params, id, action) {
-    var name, value;
-    if (params == null) {
-      params = {};
-    }
-    if (id == null) {
-      id = null;
-    }
-    if (action == null) {
-      action = null;
-    }
-    if (typeof params === 'string') {
-      params = JSON.parse(params);
-    }
-    for (name in params) {
-      value = params[name];
-      url = url.replace(":" + name, value);
-    }
-    url = url.replace(':id', id || '');
-    url = url.replace(/\/\/+/g, '/');
-    url = url.replace(/^(\w+):\//, '$1://');
-    url = url.replace(/\/$/, '');
-    if (action) {
-      url += "/" + action;
-    }
-    return url;
-  };
-
   Polymer({
     is: 'grapp-rest-resource',
     properties: {
@@ -57,7 +27,8 @@ Description: A web component that encapsulates REST API calls
         type: String
       },
       params: {
-        type: String
+        type: String,
+        value: {}
       },
       resource: {
         type: Object,
@@ -97,135 +68,61 @@ Description: A web component that encapsulates REST API calls
       self = this;
       return this.resource = {
         index: function(success, error) {
-          return self.$.request.send({
-            url: prepareUrl(self.indexUrl || self.url, self.params),
-            headers: self.prepareHeaders()
-          }).then(function(request) {
-            var json;
-            json = (request.response.trim() !== '' ? JSON.parse(request.response) : {});
-            switch (request.xhr.status) {
-              case 200:
-                return typeof success === "function" ? success(json) : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error(json) : void 0;
-            }
+          return self._sendRequest('GET', self.indexUrl).then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         },
         show: function(id, success, error) {
-          return self.$.request.send({
-            url: prepareUrl(self.showUrl || self.url, self.params, id),
-            headers: self.prepareHeaders()
-          }).then(function(request) {
-            var json;
-            json = (request.response.trim() !== '' ? JSON.parse(request.response) : {});
-            switch (request.xhr.status) {
-              case 200:
-                return typeof success === "function" ? success(json) : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error(json) : void 0;
-            }
+          return self._sendRequest('GET', self.showUrl, id).then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         },
         "new": function(success, error) {
-          return self.$.request.send({
-            url: prepareUrl(self.newUrl || self.url, self.params, null, 'new'),
-            headers: self.prepareHeaders()
-          }).then(function(request) {
-            var json;
-            json = (request.response.trim() !== '' ? JSON.parse(request.response) : {});
-            switch (request.xhr.status) {
-              case 200:
-                return typeof success === "function" ? success(json) : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error(json) : void 0;
-            }
+          return self._sendRequest('GET', self.newUrl, null, 'new').then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         },
         create: function(data, success, error) {
-          return self.$.request.send({
-            method: 'POST',
-            url: prepareUrl(self.createUrl || self.url, self.params),
-            headers: self.prepareHeaders(),
-            body: JSON.stringify(data)
-          }).then(function(request) {
-            var json;
-            json = (request.response.trim() !== '' ? JSON.parse(request.response) : {});
-            switch (request.xhr.status) {
-              case 200:
-              case 201:
-              case 204:
-                return typeof success === "function" ? success(json) : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error(json) : void 0;
-            }
+          return self._sendRequest('POST', self.createUrl, null, data).then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         },
         update: function(id, data, success, error) {
-          return self.$.request.send({
-            method: 'PUT',
-            url: prepareUrl(self.updateUrl || self.url, self.params, id),
-            headers: self.prepareHeaders(),
-            body: JSON.stringify(data)
-          }).then(function(request) {
-            var json;
-            json = (request.response.trim() !== '' ? JSON.parse(request.response) : {});
-            switch (request.xhr.status) {
-              case 200:
-              case 201:
-              case 204:
-                return typeof success === "function" ? success(json) : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error(json) : void 0;
-            }
+          return self._sendRequest('PUT', self.updateUrl, id, data).then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         },
         destroy: function(id, success, error) {
-          return self.$.request.send({
-            method: 'DELETE',
-            url: prepareUrl(self.destroyUrl || self.url, self.params, id),
-            headers: self.prepareHeaders()
-          }).then(function(request) {
-            var json;
-            json = (request.response.trim() !== '' ? JSON.parse(request.response) : {});
-            switch (request.xhr.status) {
-              case 200:
-                return typeof success === "function" ? success(json) : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error(json) : void 0;
-            }
+          return self._sendRequest('DELETE', self.destroyUrl, id).then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         },
         memberAction: function(id, action, success, error) {
-          return self.$.request.send({
-            method: 'PUT',
-            url: prepareUrl(self.memberUrl || self.url, self.params, id, action),
-            headers: self.prepareHeaders()
-          }).then(function(request) {
-            switch (request.xhr.status) {
-              case 200:
-                return typeof success === "function" ? success() : void 0;
-              case 401:
-                return self.fire('grapp-authentication-error');
-              default:
-                return typeof error === "function" ? error() : void 0;
-            }
+          return self._sendRequest('PUT', self.memberUrl, id, action).then(function(request) {
+            return self._handleResponse(request.response, request.xhr.status, success, error);
           });
         }
       };
     },
-    prepareHeaders: function() {
+    _prepareUrl: function(url, params, id, action) {
+      var name, value;
+      if (typeof params === 'string') {
+        params = JSON.parse(params);
+      }
+      for (name in params) {
+        value = params[name];
+        url = url.replace(":" + name, value);
+      }
+      url = url.replace(':id', id || '');
+      url = url.replace(/\/\/+/g, '/');
+      url = url.replace(/^(\w+):\//, '$1://');
+      url = url.replace(/\/$/, '');
+      if (action) {
+        url += "/" + action;
+      }
+      return url;
+    },
+    _prepareHeaders: function() {
       var h, key, ref, val;
       h = {
         'Accept': 'application/json'
@@ -239,6 +136,34 @@ Description: A web component that encapsulates REST API calls
         h['Authorization'] = this.token;
       }
       return h;
+    },
+    _sendRequest: function(method, url, id, data, action) {
+      if (id == null) {
+        id = null;
+      }
+      if (data == null) {
+        data = null;
+      }
+      if (action == null) {
+        action = null;
+      }
+      return this.$.request.send({
+        method: method,
+        url: this._prepareUrl(url || this.url, this.params, id, action),
+        headers: this._prepareHeaders(),
+        body: (data ? JSON.stringify(data) : void 0)
+      });
+    },
+    _handleResponse: function(response, status, success, error) {
+      var json;
+      json = (response && response.trim() !== '' ? JSON.parse(response) : {});
+      if (status >= 200 && status <= 299) {
+        return typeof success === "function" ? success(json) : void 0;
+      } else if (status === 401) {
+        return self.fire('grapp-authentication-error');
+      } else {
+        return typeof error === "function" ? error(json) : void 0;
+      }
     }
   });
 
