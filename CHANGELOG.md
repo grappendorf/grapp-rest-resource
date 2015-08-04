@@ -1,3 +1,12 @@
+<a name="0.1.4"></a>
+### 0.1.4 (2015-08-04)
+
+
+#### Bug Fixes
+
+* Create a new iron-request for every api call ([21fbbf05](http://github.com/grappendorf/grapp-rest-resource/commit/21fbbf050b6bf16f13233221ec1b83b275a3f5be))
+
+
 <a name="0.1.3"></a>
 ### 0.1.3 (2015-07-07)
 
