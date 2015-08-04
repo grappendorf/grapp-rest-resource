@@ -13,12 +13,6 @@ Description: A web component that encapsulates REST API calls
 
 <dom-module id="grapp-rest-resource">
 
-  <template>
-
-    <iron-request id="request"></iron-request>
-
-  </template>
-
 <script type="text/javascript">(function() {
   Polymer({
     is: 'grapp-rest-resource',
@@ -152,6 +146,7 @@ Description: A web component that encapsulates REST API calls
       return h;
     },
     _sendRequest: function(method, url, id, data, action) {
+      var request;
       if (id == null) {
         id = null;
       }
@@ -161,12 +156,16 @@ Description: A web component that encapsulates REST API calls
       if (action == null) {
         action = null;
       }
-      return this.$.request.send({
+      request = this._createRequestElement();
+      return request.send({
         method: method,
         url: this._prepareUrl(url || this.url, this.params, id, action),
         headers: this._prepareHeaders(),
         body: (data ? JSON.stringify(data) : void 0)
       });
+    },
+    _createRequestElement: function() {
+      return document.createElement('iron-request');
     },
     _handleResponse: function(response, status, resolve, reject) {
       var json;

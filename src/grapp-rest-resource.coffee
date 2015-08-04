@@ -75,11 +75,15 @@ Polymer
     h
 
   _sendRequest: (method, url, id = null, data = null, action = null) ->
-    @$.request.send
+    request = @_createRequestElement()
+    request.send
       method: method
       url: @_prepareUrl url || @url, @params, id, action
       headers: @_prepareHeaders()
       body: (if data then JSON.stringify data else undefined)
+
+  _createRequestElement: ->
+    document.createElement 'iron-request'
 
   _handleResponse: (response, status, resolve, reject) ->
     json = (if response && response.trim() != '' then JSON.parse response else {})
