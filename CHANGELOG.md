@@ -1,3 +1,12 @@
+<a name="0.1.5"></a>
+### 0.1.5 (2015-08-06)
+
+
+#### Bug Fixes
+
+* Promise is not rejected if a request has failed. ([d78f97bd](http://github.com/grappendorf/grapp-rest-resource/commit/d78f97bde06e5279895687d7372a01a4588832e6))
+
+
 <a name="0.1.4"></a>
 ### 0.1.4 (2015-08-04)
 
