@@ -39,12 +39,21 @@
           expect(response.data).to.eql [42]
           done()
 
+    describe 'when a request terminates successfully', ->
+
+      it 'resolves the promise', (done) ->
+        element = document.querySelector '#element'
+        element.resource.index().then (response) ->
+          done()
+        , ->
+          expect.fail()
+
     describe 'when a request terminates with an error', ->
 
       it 'rejects the promise', (done) ->
         element = document.querySelector '#element_with_request_error'
         element.resource.index().then (response) ->
-          expect.fail
+          expect.fail()
         , ->
           done()
 
