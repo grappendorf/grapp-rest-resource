@@ -102,13 +102,7 @@ Polymer
 
   _handleResponse: (response, status, resolve) ->
     json = (if response && response.trim() != '' then JSON.parse response else {})
-    if status >= 200 && status <= 299
-      resolve data: json, status: status
-    else if status == 401
-      @fire 'grapp-authentication-error'
-      reject data: json, status: status
-    else
-      reject data: json, status: status
+    resolve data: json, status: status
 
   _handleError: (response, status, reject) ->
     json = (if response && response.trim() != '' then JSON.parse response else {})

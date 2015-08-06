@@ -186,23 +186,10 @@ Description: A web component that encapsulates REST API calls
     _handleResponse: function(response, status, resolve) {
       var json;
       json = (response && response.trim() !== '' ? JSON.parse(response) : {});
-      if (status >= 200 && status <= 299) {
-        return resolve({
-          data: json,
-          status: status
-        });
-      } else if (status === 401) {
-        this.fire('grapp-authentication-error');
-        return reject({
-          data: json,
-          status: status
-        });
-      } else {
-        return reject({
-          data: json,
-          status: status
-        });
-      }
+      return resolve({
+        data: json,
+        status: status
+      });
     },
     _handleError: function(response, status, reject) {
       var json;
