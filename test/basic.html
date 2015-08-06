@@ -14,10 +14,12 @@
 </head>
 <body>
 
-  <grapp-rest-resource id="element" url="data.json" headers='{"foo":123}'></grapp-rest-resource>
+  <grapp-rest-resource id="element" url="/data" headers='{"foo":123}'></grapp-rest-resource>
 
-  <grapp-rest-resource id="element_with_special_url" url="data.json"
-    index-url="special_data.json"></grapp-rest-resource>
+  <grapp-rest-resource id="element_with_special_url" url="/data"
+    index-url="/special_data"></grapp-rest-resource>
+
+  <grapp-rest-resource id="element_with_request_error" url="/request_with_error"></grapp-rest-resource>
 
   <script type="text/coffeescript">
 
@@ -35,6 +37,15 @@
         element = document.querySelector '#element_with_special_url'
         element.resource.index().then (response) ->
           expect(response.data).to.eql [42]
+          done()
+
+    describe 'when a request terminates with an error', ->
+
+      it 'rejects the promise', (done) ->
+        element = document.querySelector '#element_with_request_error'
+        element.resource.index().then (response) ->
+          expect.fail
+        , ->
           done()
 
   </script>

@@ -55,6 +55,9 @@ Description: A web component that encapsulates REST API calls
       },
       token: {
         type: String
+      },
+      request: {
+        type: Object
       }
     },
     ready: function() {
@@ -64,49 +67,63 @@ Description: A web component that encapsulates REST API calls
         index: function() {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('GET', self.indexUrl).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         },
         show: function(id) {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('GET', self.showUrl, id).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         },
         "new": function() {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('GET', self.newUrl, null, 'new').then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         },
         create: function(data) {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('POST', self.createUrl, null, data).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         },
         update: function(id, data) {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('PUT', self.updateUrl, id, data).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         },
         destroy: function(id) {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('DELETE', self.destroyUrl, id).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         },
         memberAction: function(id, action) {
           return new Promise(function(resolve, reject) {
             return self._sendRequest('PUT', self.memberUrl, id, action).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve, reject);
+              return self._handleResponse(request.response, request.xhr.status, resolve);
+            }, function() {
+              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
             });
           });
         }
@@ -146,7 +163,6 @@ Description: A web component that encapsulates REST API calls
       return h;
     },
     _sendRequest: function(method, url, id, data, action) {
-      var request;
       if (id == null) {
         id = null;
       }
@@ -156,8 +172,8 @@ Description: A web component that encapsulates REST API calls
       if (action == null) {
         action = null;
       }
-      request = this._createRequestElement();
-      return request.send({
+      this.request = this._createRequestElement();
+      return this.request.send({
         method: method,
         url: this._prepareUrl(url || this.url, this.params, id, action),
         headers: this._prepareHeaders(),
@@ -167,7 +183,7 @@ Description: A web component that encapsulates REST API calls
     _createRequestElement: function() {
       return document.createElement('iron-request');
     },
-    _handleResponse: function(response, status, resolve, reject) {
+    _handleResponse: function(response, status, resolve) {
       var json;
       json = (response && response.trim() !== '' ? JSON.parse(response) : {});
       if (status >= 200 && status <= 299) {
@@ -176,7 +192,23 @@ Description: A web component that encapsulates REST API calls
           status: status
         });
       } else if (status === 401) {
-        self.fire('grapp-authentication-error');
+        this.fire('grapp-authentication-error');
+        return reject({
+          data: json,
+          status: status
+        });
+      } else {
+        return reject({
+          data: json,
+          status: status
+        });
+      }
+    },
+    _handleError: function(response, status, reject) {
+      var json;
+      json = (response && response.trim() !== '' ? JSON.parse(response) : {});
+      if (status === 401) {
+        this.fire('grapp-authentication-error');
         return reject({
           data: json,
           status: status
