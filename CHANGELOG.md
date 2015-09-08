@@ -1,3 +1,12 @@
+<a name="0.1.7"></a>
+### 0.1.7 (2015-09-08)
+
+
+#### Bug Fixes
+
+* send content-type header ([78c1dd40](http://github.com/grappendorf/grapp-rest-resource/commit/78c1dd40dde990b5e39ccd205eea76ce43d214ea))
+
+
 <a name="0.1.6"></a>
 ### 0.1.6 (2015-08-06)
 
