@@ -83,7 +83,7 @@ Polymer
     url
 
   _prepareHeaders: ->
-    h = {'Accept': 'application/json'}
+    h = {'Accept': 'application/json', 'Content-Type': 'application/json'}
     for key, val of @headers
       h[key] = val
     h['Authorization'] = @token if @token

@@ -150,7 +150,8 @@ Description: A web component that encapsulates REST API calls
     _prepareHeaders: function() {
       var h, key, ref, val;
       h = {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       };
       ref = this.headers;
       for (key in ref) {

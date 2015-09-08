@@ -14,6 +14,8 @@
 </head>
 <body>
 
+  <grapp-rest-resource id="element" url="http://api.example.com"></grapp-rest-resource>
+
   <grapp-rest-resource id="element_with_headers" url="http://api.example.com"
                        headers='{"foo":123}'></grapp-rest-resource>
 
@@ -22,6 +24,16 @@
 
   <script type="text/coffeescript">
 
+    describe 'default hedaers', ->
+
+      it 'sends accept and content type headers', ->
+        element = document.querySelector '#element'
+        xhr_request = sinon.stub().returns new Promise(->)
+        sinon.stub(element, '_createRequestElement').returns {send: xhr_request}
+        element.resource.index()
+        expect(xhr_request).to.have.been.calledWith sinon.match {
+          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}}
+
     describe 'with defined hedaers attribute ', ->
 
       it 'sends the custom headers', ->
@@ -29,7 +41,7 @@
         xhr_request = sinon.stub().returns new Promise(->)
         sinon.stub(element, '_createRequestElement').returns {send: xhr_request}
         element.resource.index()
-        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {Accept: 'application/json', foo: 123}}
+        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {foo: 123}}
 
     describe 'with defined token attribute ', ->
 
