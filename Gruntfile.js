@@ -92,13 +92,6 @@ module.exports = function(grunt) {
                       {"name": "Bob", "role": "Developer"},
                       {"name": "Carol", "role": "Sales"}]
                 ));
-              } else if (req.url === '/data') {
-                res.end(JSON.stringify([1, 2, 3]));
-              } else if (req.url === '/special_data') {
-                res.end(JSON.stringify([42]));
-              } else if (req.url === '/request_with_error') {
-                res.statusCode = 401;
-                res.end('{"error":"Something terrible happened!"}');
               } else {
                 return next();
               }
@@ -149,9 +142,17 @@ module.exports = function(grunt) {
       options: {}
     },
 
+    'wct-test': {
+      local: {
+        options: {
+          remote: false
+        }
+      }
+    },
+
     shell: {
       test: {
-        command: 'xvfb-run -a ./bin/grunt wct-test'
+        command: 'xvfb-run -a ./bin/grunt wct-test:local'
       }
     }
   });
@@ -168,29 +169,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-html-build');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('web-component-tester');
 
   grunt.registerTask('build', 'Compile all assets and create the distribution files',
       ['less', 'coffeelint', 'coffee', 'htmlbuild', 'replace']);
-
-  grunt.registerTask('wct-test', function() {
-    var
-        done = this.async(),
-        wct = require('web-component-tester'),
-        options = {
-          remote: false,
-          persistent: false,
-          root: '.',
-          plugins: {
-            local: {
-              browsers: ['chrome']
-            }
-          }
-        };
-    wct.test(options, function() {
-      done();
-      process.exit(0);
-    });
-  });
 
   grunt.registerTask('test', 'Test the web application', ['shell:test']);
 

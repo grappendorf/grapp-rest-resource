@@ -5,57 +5,82 @@
   <meta charset="UTF-8">
   <title>grapp-rest-resource basic tests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
   <script src='../lib/webcomponentsjs/webcomponents-lite.min.js'></script>
   <script src="../lib/web-component-tester/browser.js"></script>
+  <script src="../lib/test-fixture/test-fixture-mocha.js"></script>
   <script src="../lib/coffee-script/extras/coffee-script.js"></script>
-
-  <link href="../build/grapp-rest-resource.html" rel="import">
+  <link rel="import" href="../lib/test-fixture/test-fixture.html">
+  <link rel="import" href="../build/grapp-rest-resource.html">
 </head>
+
 <body>
 
-  <grapp-rest-resource id="element" url="/data" headers='{"foo":123}'></grapp-rest-resource>
+  <test-fixture id="simple-resource">
+    <template>
+      <grapp-rest-resource url="/data"></grapp-rest-resource>
+    </template>
+  </test-fixture>
 
-  <grapp-rest-resource id="element_with_special_url" url="/data"
-    index-url="/special_data"></grapp-rest-resource>
+  <test-fixture id="resource-with-special-url">
+    <template>
+      <grapp-rest-resource url="/data" index-url="/special_data"></grapp-rest-resource>
+    </template>
+  </test-fixture>
 
-  <grapp-rest-resource id="element_with_request_error" url="/request_with_error"></grapp-rest-resource>
+  <test-fixture id="resource-with-request-error">
+    <template>
+      <grapp-rest-resource url="/unknown_data"></grapp-rest-resource>
+    </template>
+  </test-fixture>
 
   <script type="text/coffeescript">
+
+    before ->
+      @server = sinon.fakeServer.create()
+      @server.respondWith 'GET', '/data',
+          [200, {'Content-Type': 'application/json'}, '[1,2,3]']
+      @server.respondWith 'GET', '/special_data',
+          [200, {'Content-Type': 'application/json'}, '[42]']
+      @server.respondWith 'GET', '/unknown_data',
+          [404, {}, '[]']
 
     describe 'GET /resource', ->
 
       it 'retrieves all items', (done) ->
-        element = document.querySelector '#element'
+        element = fixture 'simple-resource'
         element.resource.index().then (response) ->
           expect(response.data).to.eql [1, 2, 3]
           done()
+        @server.respond()
 
     describe 'when a special URL is defined for a method', ->
 
       it 'accesses the special URL', (done) ->
-        element = document.querySelector '#element_with_special_url'
+        element = fixture 'resource-with-special-url'
         element.resource.index().then (response) ->
           expect(response.data).to.eql [42]
           done()
+        @server.respond()
 
     describe 'when a request terminates successfully', ->
 
       it 'resolves the promise', (done) ->
-        element = document.querySelector '#element'
+        element = fixture 'simple-resource'
         element.resource.index().then (response) ->
           done()
         , ->
           expect.fail()
+        @server.respond()
 
     describe 'when a request terminates with an error', ->
 
       it 'rejects the promise', (done) ->
-        element = document.querySelector '#element_with_request_error'
+        element = fixture 'resource-with-request-error'
         element.resource.index().then (response) ->
           expect.fail()
         , ->
           done()
+        @server.respond()
 
   </script>
 

@@ -5,52 +5,78 @@
   <meta charset="UTF-8">
   <title>grapp-rest-resource headers tests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
   <script src='../lib/webcomponentsjs/webcomponents-lite.min.js'></script>
   <script src="../lib/web-component-tester/browser.js"></script>
+  <script src="../lib/test-fixture/test-fixture-mocha.js"></script>
   <script src="../lib/coffee-script/extras/coffee-script.js"></script>
-
-  <link href="../build/grapp-rest-resource.html" rel="import">
+  <link rel="import" href="../lib/test-fixture/test-fixture.html">
+  <link rel="import" href="../build/grapp-rest-resource.html">
 </head>
+
 <body>
 
-  <grapp-rest-resource id="element" url="http://api.example.com"></grapp-rest-resource>
+  <test-fixture id="simple-request">
+    <template>
+      <grapp-rest-resource url="/data"></grapp-rest-resource>
+    </template>
+  </test-fixture>
 
-  <grapp-rest-resource id="element_with_headers" url="http://api.example.com"
-                       headers='{"foo":123}'></grapp-rest-resource>
+  <test-fixture id="request-with-headers">
+    <template>
+      <grapp-rest-resource url="/data" headers='{"foo":123}'></grapp-rest-resource>
+    </template>
+  </test-fixture>
 
-  <grapp-rest-resource id="element_with_token" url="http://api.example.com"
-                       token="JWT"></grapp-rest-resource>
+  <test-fixture id="request-with-token">
+    <template>
+      <grapp-rest-resource url="/data" token="JWT"></grapp-rest-resource>
+    </template>
+  </test-fixture>
 
   <script type="text/coffeescript">
 
-    describe 'default hedaers', ->
+    before ->
+      @server = sinon.fakeServer.create()
+      @server.respondWith 'GET', '/data', (request) ->
+        if request.requestHeaders['foo'] == 123
+          request.respond 200, {'Content-Type': 'application/json'}, '"request-with-headers"'
+        else if request.requestHeaders['Authorization'] == 'JWT'
+          request.respond 200, {'Content-Type': 'application/json'}, '"request-with-token"'
+        else if request.requestHeaders['Accept'] == 'application/json' && request.requestHeaders['Content-Type'] == 'application/json'
+          request.respond 200, {'Content-Type': 'application/json'}, '"simple-request"'
 
-      it 'sends accept and content type headers', ->
-        element = document.querySelector '#element'
-        xhr_request = sinon.stub().returns new Promise(->)
-        sinon.stub(element, '_createRequestElement').returns {send: xhr_request}
-        element.resource.index()
-        expect(xhr_request).to.have.been.calledWith sinon.match {
-          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}}
+      describe 'default hedaers', ->
+
+      it 'sends accept and content type headers', (done) ->
+        element = fixture 'simple-request'
+        element.resource.index().then((response) ->
+          expect(response.data).to.eql 'simple-request'
+          done()
+        ).catch (error) ->
+          done(error)
+        @server.respond()
 
     describe 'with defined hedaers attribute ', ->
 
-      it 'sends the custom headers', ->
-        element = document.querySelector '#element_with_headers'
-        xhr_request = sinon.stub().returns new Promise(->)
-        sinon.stub(element, '_createRequestElement').returns {send: xhr_request}
-        element.resource.index()
-        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {foo: 123}}
+      it 'sends the custom headers', (done) ->
+        element = fixture 'request-with-headers'
+        element.resource.index().then((response) ->
+          expect(response.data).to.eql 'request-with-headers'
+          done()
+        ).catch (error) ->
+          done(error)
+        @server.respond()
 
     describe 'with defined token attribute ', ->
 
-      it 'sends the an authorization header', ->
-        element = document.querySelector '#element_with_token'
-        xhr_request = sinon.stub().returns new Promise(->)
-        sinon.stub(element, '_createRequestElement').returns {send: xhr_request}
-        element.resource.index()
-        expect(xhr_request).to.have.been.calledWith sinon.match {headers: {Authorization: 'JWT'}}
+      it 'sends the an authorization header', (done) ->
+        element = fixture 'request-with-token'
+        element.resource.index().then((response) ->
+          expect(response.data).to.eql 'request-with-token'
+          done()
+        ).catch (error) ->
+          done(error)
+        @server.respond()
 
   </script>
 
