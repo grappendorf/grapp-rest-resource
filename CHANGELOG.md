@@ -1,3 +1,12 @@
+<a name="0.1.9"></a>
+### 0.1.9 (2015-09-17)
+
+
+#### Bug Fixes
+
+* workaround: wct currently expects to find some bower components in the "componen ([7210f0f7](http://github.com/grappendorf/grapp-rest-resource/commit/7210f0f74752e5a3c3536b39a0e9cc8af00a2cb2))
+
+
 <a name="0.1.8"></a>
 ### 0.1.8 (2015-09-09)
 
