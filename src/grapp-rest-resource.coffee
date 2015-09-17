@@ -4,7 +4,7 @@ Polymer
 
   properties:
     url: {type: String}
-    params: {type: String, value: {}}
+    params: {type: String, value: -> {}}
     resource: {type: Object, notify: true}
     indexUrl: {type: String}
     showUrl: {type: String}
@@ -13,7 +13,7 @@ Polymer
     updateUrl: {type: String}
     destroyUrl: {type: String}
     memberUrl: {type: String}
-    headers: {type: Object, value: {}}
+    headers: {type: Object, value: -> {}}
     token: {type: String},
     request: {type: Object}
 

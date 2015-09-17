@@ -58,10 +58,9 @@ module.exports = function(grunt) {
         dest: 'build/',
         options: {
           scripts: {
-            dist: ['build/*.js']
+            'grapp-rest-resource': ['build/grapp-rest-resource.js']
           },
           styles: {
-            dist: ['build/*.css']
           },
           data: {
             copyright: grunt.file.read('tmpl/copyright.tmpl')

@@ -9,7 +9,7 @@ Description: A web component that encapsulates REST API calls
 -->
 
 
-<link href="../iron-ajax/iron-request.html" rel="import">
+<link rel="import" href="../iron-ajax/iron-request.html">
 
 <dom-module id="grapp-rest-resource">
 
@@ -22,7 +22,9 @@ Description: A web component that encapsulates REST API calls
       },
       params: {
         type: String,
-        value: {}
+        value: function() {
+          return {};
+        }
       },
       resource: {
         type: Object,
@@ -51,7 +53,9 @@ Description: A web component that encapsulates REST API calls
       },
       headers: {
         type: Object,
-        value: {}
+        value: function() {
+          return {};
+        }
       },
       token: {
         type: String
