@@ -20,6 +20,9 @@ Description: A web component that encapsulates REST API calls
       url: {
         type: String
       },
+      baseUrl: {
+        type: String
+      },
       params: {
         type: String,
         value: function() {
@@ -158,7 +161,6 @@ Description: A web component that encapsulates REST API calls
         })(this),
         memberAction: (function(_this) {
           return function(id, action) {
-            console.log(action);
             return new Promise(function(resolve, reject) {
               return _this._sendRequest('PUT', _this.memberUrl, _this.memberQueryString, id, null, action).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
@@ -172,7 +174,9 @@ Description: A web component that encapsulates REST API calls
     },
     _prepareUrl: function(url, queryString, params, id, action) {
       var name, value;
-      console.log(action);
+      if (this.baseUrl) {
+        url = this.baseUrl + url;
+      }
       if (queryString) {
         url += '?' + queryString;
       }

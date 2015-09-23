@@ -8,6 +8,12 @@ Compatible with Polymer 1.0+
 Properties
 ----------
 
+  * **baseUrl**
+
+    - *type:* string
+    
+    If a base url is specified, it is prepended to all request urls. 
+
   * **url**
 
     - *type:* string

@@ -33,6 +33,12 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="resource-with-base-url">
+    <template>
+      <grapp-rest-resource base-url="http://api.example.com" url="/data"></grapp-rest-resource>
+    </template>
+  </test-fixture>
+
   <test-fixture id="resource-with-special-urls">
     <template>
       <grapp-rest-resource url="/data"
@@ -71,6 +77,8 @@
           [200, {'Content-Type': 'application/json'}, '"member-request"']
       @server.respondWith 'GET', '/data/1/subdata/42',
           [200, {'Content-Type': 'application/json'}, '"request-with-url-params"']
+      @server.respondWith 'GET', 'http://api.example.com/data',
+          [200, {'Content-Type': 'application/json'}, '"request-with-base-url"']
       @server.respondWith 'GET', '/special_index_url',
           [200, {'Content-Type': 'application/json'}, '"request-with-special-index-url"']
       @server.respondWith 'GET', '/special_show_url',
@@ -175,6 +183,15 @@
         element = fixture 'resource-with-url-params'
         element.resource.index().then (response) ->
           expect(response.data).to.eql "request-with-url-params"
+          done()
+        @server.respond()
+
+    describe 'when a base url is specified', ->
+
+      it 'prepends the base url to the url', (done) ->
+        element = fixture 'resource-with-base-url'
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "request-with-base-url"
           done()
         @server.respond()
 

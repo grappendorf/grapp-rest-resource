@@ -4,6 +4,7 @@ Polymer
 
   properties:
     url: {type: String}
+    baseUrl: {type: String}
     params: {type: String, value: -> {}}
     resource: {type: Object, notify: true}
     indexUrl: {type: String}
@@ -70,7 +71,6 @@ Polymer
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       memberAction: (id, action) =>
-        console.log action
         new Promise (resolve, reject) =>
           @_sendRequest('PUT', @memberUrl, @memberQueryString, id, null, action).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
@@ -78,7 +78,7 @@ Polymer
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
   _prepareUrl: (url, queryString, params, id, action) ->
-    console.log action
+    url = @baseUrl + url if @baseUrl
     url += '?' + queryString if queryString
     params = JSON.parse(params) if typeof(params) == 'string'
     for name, value of params
