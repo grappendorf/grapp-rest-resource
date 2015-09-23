@@ -17,7 +17,7 @@ Description: A web component that encapsulates REST API calls
   Polymer({
     is: 'grapp-rest-resource',
     properties: {
-      url: {
+      path: {
         type: String
       },
       baseUrl: {
@@ -33,25 +33,25 @@ Description: A web component that encapsulates REST API calls
         type: Object,
         notify: true
       },
-      indexUrl: {
+      indexPath: {
         type: String
       },
-      showUrl: {
+      showPath: {
         type: String
       },
-      newUrl: {
+      newPath: {
         type: String
       },
-      createUrl: {
+      createPath: {
         type: String
       },
-      updateUrl: {
+      updatePath: {
         type: String
       },
-      destroyUrl: {
+      destroyPath: {
         type: String
       },
-      memberUrl: {
+      memberPath: {
         type: String
       },
       query: {
@@ -96,7 +96,7 @@ Description: A web component that encapsulates REST API calls
         index: (function(_this) {
           return function() {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.indexUrl, _this.indexQuery).then(function(request) {
+              return _this._sendRequest('GET', _this.indexPath, _this.indexQuery).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -107,7 +107,7 @@ Description: A web component that encapsulates REST API calls
         show: (function(_this) {
           return function(id) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.showUrl, _this.showQuery, id).then(function(request) {
+              return _this._sendRequest('GET', _this.showPath, _this.showQuery, id).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -118,7 +118,7 @@ Description: A web component that encapsulates REST API calls
         "new": (function(_this) {
           return function() {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.newUrl, _this.newQuery, null, 'new').then(function(request) {
+              return _this._sendRequest('GET', _this.newPath, _this.newQuery, null, 'new').then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -129,7 +129,7 @@ Description: A web component that encapsulates REST API calls
         create: (function(_this) {
           return function(data) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('POST', _this.createUrl, _this.createQuery, null, data).then(function(request) {
+              return _this._sendRequest('POST', _this.createPath, _this.createQuery, null, data).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -140,7 +140,7 @@ Description: A web component that encapsulates REST API calls
         update: (function(_this) {
           return function(id, data) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('PUT', _this.updateUrl, _this.updateQuery, id, data).then(function(request) {
+              return _this._sendRequest('PUT', _this.updatePath, _this.updateQuery, id, data).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -151,7 +151,7 @@ Description: A web component that encapsulates REST API calls
         destroy: (function(_this) {
           return function(id) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('DELETE', _this.destroyUrl, _this.destroyQuery, id).then(function(request) {
+              return _this._sendRequest('DELETE', _this.destroyPath, _this.destroyQuery, id).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -162,7 +162,7 @@ Description: A web component that encapsulates REST API calls
         memberAction: (function(_this) {
           return function(id, action) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('PUT', _this.memberUrl, _this.memberQuery, id, null, action).then(function(request) {
+              return _this._sendRequest('PUT', _this.memberPath, _this.memberQuery, id, null, action).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -172,11 +172,11 @@ Description: A web component that encapsulates REST API calls
         })(this)
       };
     },
-    _prepareUrl: function(url, query, params, id, action) {
-      var name, value;
-      if (this.baseUrl) {
-        url = this.baseUrl + url;
-      }
+    _prepareUrl: function(path, query, params, id, action) {
+      var name, url, value;
+      console.log(path);
+      url = this.baseUrl ? this.baseUrl + path : path;
+      console.log(url);
       if (query) {
         url += '?' + query;
       }
@@ -212,7 +212,7 @@ Description: A web component that encapsulates REST API calls
       }
       return h;
     },
-    _sendRequest: function(method, url, query, id, data, action) {
+    _sendRequest: function(method, path, query, id, data, action) {
       if (id == null) {
         id = null;
       }
@@ -225,7 +225,7 @@ Description: A web component that encapsulates REST API calls
       this.request = this._createRequestElement();
       return this.request.send({
         method: method,
-        url: this._prepareUrl(url || this.url, query || this.query, this.params, id, action),
+        url: this._prepareUrl(path || this.path, query || this.query, this.params, id, action),
         headers: this._prepareHeaders(),
         body: (data ? JSON.stringify(data) : void 0)
       });

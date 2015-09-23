@@ -17,19 +17,19 @@
 
   <test-fixture id="simple-request">
     <template>
-      <grapp-rest-resource url="/data"></grapp-rest-resource>
+      <grapp-rest-resource path="/data"></grapp-rest-resource>
     </template>
   </test-fixture>
 
   <test-fixture id="request-with-headers">
     <template>
-      <grapp-rest-resource url="/data" headers='{"foo":123}'></grapp-rest-resource>
+      <grapp-rest-resource path="/data" headers='{"foo":123}'></grapp-rest-resource>
     </template>
   </test-fixture>
 
   <test-fixture id="request-with-token">
     <template>
-      <grapp-rest-resource url="/data" token="JWT"></grapp-rest-resource>
+      <grapp-rest-resource path="/data" token="JWT"></grapp-rest-resource>
     </template>
   </test-fixture>
 

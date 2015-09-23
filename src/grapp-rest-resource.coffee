@@ -3,17 +3,17 @@ Polymer
   is: 'grapp-rest-resource',
 
   properties:
-    url: {type: String}
+    path: {type: String}
     baseUrl: {type: String}
     params: {type: String, value: -> {}}
     resource: {type: Object, notify: true}
-    indexUrl: {type: String}
-    showUrl: {type: String}
-    newUrl: {type: String}
-    createUrl: {type: String}
-    updateUrl: {type: String}
-    destroyUrl: {type: String}
-    memberUrl: {type: String}
+    indexPath: {type: String}
+    showPath: {type: String}
+    newPath: {type: String}
+    createPath: {type: String}
+    updatePath: {type: String}
+    destroyPath: {type: String}
+    memberPath: {type: String}
     query: {type: String}
     indexQuery: {type: String}
     showQuery: {type: String}
@@ -30,55 +30,57 @@ Polymer
     @resource =
       index: =>
         new Promise (resolve, reject) =>
-          @_sendRequest('GET', @indexUrl, @indexQuery).then (request) =>
+          @_sendRequest('GET', @indexPath, @indexQuery).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       show: (id) =>
         new Promise (resolve, reject) =>
-          @_sendRequest('GET', @showUrl, @showQuery, id).then (request) =>
+          @_sendRequest('GET', @showPath, @showQuery, id).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       new: () =>
         new Promise (resolve, reject) =>
-          @_sendRequest('GET', @newUrl, @newQuery, null, 'new').then (request) =>
+          @_sendRequest('GET', @newPath, @newQuery, null, 'new').then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       create: (data) =>
         new Promise (resolve, reject) =>
-          @_sendRequest('POST', @createUrl, @createQuery, null, data).then (request) =>
+          @_sendRequest('POST', @createPath, @createQuery, null, data).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       update: (id, data) =>
         new Promise (resolve, reject) =>
-          @_sendRequest('PUT', @updateUrl, @updateQuery, id, data).then (request) =>
+          @_sendRequest('PUT', @updatePath, @updateQuery, id, data).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       destroy: (id) =>
         new Promise (resolve, reject) =>
-          @_sendRequest('DELETE', @destroyUrl, @destroyQuery, id).then (request) =>
+          @_sendRequest('DELETE', @destroyPath, @destroyQuery, id).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
       memberAction: (id, action) =>
         new Promise (resolve, reject) =>
-          @_sendRequest('PUT', @memberUrl, @memberQuery, id, null, action).then (request) =>
+          @_sendRequest('PUT', @memberPath, @memberQuery, id, null, action).then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
-  _prepareUrl: (url, query, params, id, action) ->
-    url = @baseUrl + url if @baseUrl
+  _prepareUrl: (path, query, params, id, action) ->
+    console.log path
+    url = if @baseUrl then @baseUrl + path else path
+    console.log url
     url += '?' + query if query
     params = JSON.parse(params) if typeof(params) == 'string'
     for name, value of params
@@ -98,11 +100,11 @@ Polymer
     h['Authorization'] = @token if @token
     h
 
-  _sendRequest: (method, url, query, id = null, data = null, action = null) ->
+  _sendRequest: (method, path, query, id = null, data = null, action = null) ->
     @request = @_createRequestElement()
     @request.send
       method: method
-      url: @_prepareUrl url || @url, query || @query, @params, id, action
+      url: @_prepareUrl path || @path, query || @query, @params, id, action
       headers: @_prepareHeaders()
       body: (if data then JSON.stringify data else undefined)
 

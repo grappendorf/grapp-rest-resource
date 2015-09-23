@@ -17,38 +17,38 @@
 
   <test-fixture id="resource">
     <template>
-      <grapp-rest-resource url="/data/:id"></grapp-rest-resource>
+      <grapp-rest-resource path="/data/:id"></grapp-rest-resource>
     </template>
   </test-fixture>
 
   <test-fixture id="resource-with-request-error">
     <template>
-      <grapp-rest-resource url="/unknown_resource"></grapp-rest-resource>
+      <grapp-rest-resource path="/unknown_resource"></grapp-rest-resource>
     </template>
   </test-fixture>
 
   <test-fixture id="resource-with-url-params">
     <template>
-      <grapp-rest-resource url="/data/1/subdata/:subdata_id" params='{"subdata_id": 42}'></grapp-rest-resource>
+      <grapp-rest-resource path="/data/1/subdata/:subdata_id" params='{"subdata_id": 42}'></grapp-rest-resource>
     </template>
   </test-fixture>
 
   <test-fixture id="resource-with-base-url">
     <template>
-      <grapp-rest-resource base-url="http://api.example.com" url="/data"></grapp-rest-resource>
+      <grapp-rest-resource base-url="http://api.example.com" path="/data"></grapp-rest-resource>
     </template>
   </test-fixture>
 
-  <test-fixture id="resource-with-special-urls">
+  <test-fixture id="resource-with-special-paths">
     <template>
-      <grapp-rest-resource url="/data"
-                           index-url="/special_index_url"
-                           show-url="/special_show_url"
-                           new-url="/special_new_url"
-                           create-url="/special_create_url"
-                           update-url="/special_update_url"
-                           destroy-url="/special_destroy_url"
-                           member-url="/special_member_url">
+      <grapp-rest-resource path="/data"
+                           index-path="/special_index_path"
+                           show-path="/special_show_path"
+                           new-path="/special_new_path"
+                           create-path="/special_create_path"
+                           update-path="/special_update_path"
+                           destroy-path="/special_destroy_path"
+                           member-path="/special_member_path">
       </grapp-rest-resource>
     </template>
   </test-fixture>
@@ -79,20 +79,20 @@
           [200, {'Content-Type': 'application/json'}, '"request-with-url-params"']
       @server.respondWith 'GET', 'http://api.example.com/data',
           [200, {'Content-Type': 'application/json'}, '"request-with-base-url"']
-      @server.respondWith 'GET', '/special_index_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-index-url"']
-      @server.respondWith 'GET', '/special_show_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-show-url"']
-      @server.respondWith 'GET', '/special_new_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-new-url"']
-      @server.respondWith 'POST', '/special_create_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-create-url"']
-      @server.respondWith 'PUT', '/special_update_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-update-url"']
-      @server.respondWith 'DELETE', '/special_destroy_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-destroy-url"']
-      @server.respondWith 'PUT', '/special_member_url',
-          [200, {'Content-Type': 'application/json'}, '"request-with-special-member-url"']
+      @server.respondWith 'GET', '/special_index_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-index-path"']
+      @server.respondWith 'GET', '/special_show_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-show-path"']
+      @server.respondWith 'GET', '/special_new_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-new-path"']
+      @server.respondWith 'POST', '/special_create_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-create-path"']
+      @server.respondWith 'PUT', '/special_update_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-update-path"']
+      @server.respondWith 'DELETE', '/special_destroy_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-destroy-path"']
+      @server.respondWith 'PUT', '/special_member_path',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-member-path"']
 
     describe 'when a request terminates successfully', ->
 
@@ -198,47 +198,47 @@
     describe 'specifying a special url', ->
 
       beforeEach ->
-        element = fixture 'resource-with-special-urls'
+        element = fixture 'resource-with-special-paths'
 
       it 'accesses the special index URL', (done) ->
         element.resource.index().then (response) ->
-          expect(response.data).to.eql "request-with-special-index-url"
+          expect(response.data).to.eql "request-with-special-index-path"
           done()
         @server.respond()
 
       it 'accesses the special show URL', (done) ->
         element.resource.show().then (response) ->
-          expect(response.data).to.eql "request-with-special-show-url"
+          expect(response.data).to.eql "request-with-special-show-path"
           done()
         @server.respond()
 
       it 'accesses the special new URL', (done) ->
         element.resource.new().then (response) ->
-          expect(response.data).to.eql "request-with-special-new-url"
+          expect(response.data).to.eql "request-with-special-new-path"
           done()
         @server.respond()
 
       it 'accesses the special create URL', (done) ->
         element.resource.create().then (response) ->
-          expect(response.data).to.eql "request-with-special-create-url"
+          expect(response.data).to.eql "request-with-special-create-path"
           done()
         @server.respond()
 
       it 'accesses the special update URL', (done) ->
         element.resource.update().then (response) ->
-          expect(response.data).to.eql "request-with-special-update-url"
+          expect(response.data).to.eql "request-with-special-update-path"
           done()
         @server.respond()
 
       it 'accesses the special destroy URL', (done) ->
         element.resource.destroy().then (response) ->
-          expect(response.data).to.eql "request-with-special-destroy-url"
+          expect(response.data).to.eql "request-with-special-destroy-path"
           done()
         @server.respond()
 
       it 'accesses the special member URL', (done) ->
         element.resource.memberAction().then (response) ->
-          expect(response.data).to.eql "request-with-special-member-url"
+          expect(response.data).to.eql "request-with-special-member-path"
           done()
         @server.respond()
 

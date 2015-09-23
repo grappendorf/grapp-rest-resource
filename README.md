@@ -12,17 +12,17 @@ Properties
 
     - *type:* string
     
-    If a base url is specified, it is prepended to all request urls. 
+    The base url of all requests (e.g. https://api.exmaple.com:8000). 
 
-  * **url**
+  * **path**
 
     - *type:* string
 
-    A pattern for the REST URL. Can contain colon-parameters and data bindings, for example:
+    A pattern for the url path. Can contain colon-parameters and data bindings, for example:
 
-    `url="/users/:userId?q={{searchText}}"`
+    `path="/users/:userId"`
 
-    Default URLS:
+    Default paths:
 
     Method        | HTTP method | URL
     ------------- | ----------- | ---
@@ -56,37 +56,37 @@ Properties
 
     Use this URL instead of the default one for "GET /resources" requests.
 
-  * **showUrl**
+  * **showPath**
 
     - *type:* string
 
     Use this URL instead of the default one for "GET /resources/:id" requests.
 
-  * **newUrl**
+  * **newPath**
 
     - *type:* string
 
     Use this URL instead of the default one for "GET /resources/:id" requests.
 
-  * **createUrl**
+  * **createPath**
 
     - *type:* string
 
     Use this URL instead of the default one for "POST /resources" requests.
 
-  * **updateUrl**
+  * **updatePath**
 
     - *type:* string
 
     Use this URL instead of the default one for "PUT /resources/:id" requests.
 
-  * **destroyUrl**
+  * **destroyPath**
 
     - *type:* string
 
     Use this URL instead of the default one for "DELETE /resources/:id" requests.
 
-  * **memberUrl**
+  * **memberPath**
 
     - *type:* string
 
@@ -102,43 +102,43 @@ Properties
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the indexUrl. 
+    A query string (without the '?') that is appended to the indexPath. 
 
   * **showQuery**
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the showUrl. 
+    A query string (without the '?') that is appended to the showPath. 
 
   * **newQuery**
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the newUrl. 
+    A query string (without the '?') that is appended to the newPath. 
 
   * **createQuery**
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the createUrl. 
+    A query string (without the '?') that is appended to the createPath. 
 
   * **updateQuery**
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the updateUrl. 
+    A query string (without the '?') that is appended to the updatePath. 
 
   * **destroyQuery**
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the destroyUrl. 
+    A query string (without the '?') that is appended to the destroyPath. 
 
   * **memberQuery**
 
     - *type:* string
 
-    A query string (without the '?') that is appended to the memberUrl. 
+    A query string (without the '?') that is appended to the memberPath. 
 
   * **headers**
 
