@@ -15,57 +15,81 @@
 
 <body>
 
-  <test-fixture id="simple-resource">
+  <test-fixture id="resource">
     <template>
-      <grapp-rest-resource url="/data"></grapp-rest-resource>
-    </template>
-  </test-fixture>
-
-  <test-fixture id="resource-with-special-url">
-    <template>
-      <grapp-rest-resource url="/data" index-url="/special_data"></grapp-rest-resource>
+      <grapp-rest-resource url="/data/:id"></grapp-rest-resource>
     </template>
   </test-fixture>
 
   <test-fixture id="resource-with-request-error">
     <template>
-      <grapp-rest-resource url="/unknown_data"></grapp-rest-resource>
+      <grapp-rest-resource url="/unknown_resource"></grapp-rest-resource>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="resource-with-url-params">
+    <template>
+      <grapp-rest-resource url="/data/1/subdata/:subdata_id" params='{"subdata_id": 42}'></grapp-rest-resource>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="resource-with-special-urls">
+    <template>
+      <grapp-rest-resource url="/data"
+                           index-url="/special_index_url"
+                           show-url="/special_show_url"
+                           new-url="/special_new_url"
+                           create-url="/special_create_url"
+                           update-url="/special_update_url"
+                           destroy-url="/special_destroy_url"
+                           member-url="/special_member_url">
+      </grapp-rest-resource>
     </template>
   </test-fixture>
 
   <script type="text/coffeescript">
 
+    element = null
+
     before ->
       @server = sinon.fakeServer.create()
+      @server.respondWith 'GET', '/unknown_resource',
+          [404, {}, '"unknown-request']
       @server.respondWith 'GET', '/data',
-          [200, {'Content-Type': 'application/json'}, '[1,2,3]']
-      @server.respondWith 'GET', '/special_data',
-          [200, {'Content-Type': 'application/json'}, '[42]']
-      @server.respondWith 'GET', '/unknown_data',
-          [404, {}, '[]']
-
-    describe 'GET /resource', ->
-
-      it 'retrieves all items', (done) ->
-        element = fixture 'simple-resource'
-        element.resource.index().then (response) ->
-          expect(response.data).to.eql [1, 2, 3]
-          done()
-        @server.respond()
-
-    describe 'when a special URL is defined for a method', ->
-
-      it 'accesses the special URL', (done) ->
-        element = fixture 'resource-with-special-url'
-        element.resource.index().then (response) ->
-          expect(response.data).to.eql [42]
-          done()
-        @server.respond()
+          [200, {'Content-Type': 'application/json'}, '"index-request"']
+      @server.respondWith 'GET', '/data/1',
+          [200, {'Content-Type': 'application/json'}, '"show-request"']
+      @server.respondWith 'GET', '/data/new',
+          [200, {'Content-Type': 'application/json'}, '"new-request"']
+      @server.respondWith 'POST', '/data',
+          [200, {'Content-Type': 'application/json'}, '"create-request"']
+      @server.respondWith 'PUT', '/data/1',
+          [200, {'Content-Type': 'application/json'}, '"update-request"']
+      @server.respondWith 'DELETE', '/data/1',
+          [200, {'Content-Type': 'application/json'}, '"destroy-request"']
+      @server.respondWith 'PUT', '/data/1/action',
+          [200, {'Content-Type': 'application/json'}, '"member-request"']
+      @server.respondWith 'GET', '/data/1/subdata/42',
+          [200, {'Content-Type': 'application/json'}, '"request-with-url-params"']
+      @server.respondWith 'GET', '/special_index_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-index-url"']
+      @server.respondWith 'GET', '/special_show_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-show-url"']
+      @server.respondWith 'GET', '/special_new_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-new-url"']
+      @server.respondWith 'POST', '/special_create_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-create-url"']
+      @server.respondWith 'PUT', '/special_update_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-update-url"']
+      @server.respondWith 'DELETE', '/special_destroy_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-destroy-url"']
+      @server.respondWith 'PUT', '/special_member_url',
+          [200, {'Content-Type': 'application/json'}, '"request-with-special-member-url"']
 
     describe 'when a request terminates successfully', ->
 
       it 'resolves the promise', (done) ->
-        element = fixture 'simple-resource'
+        element = fixture 'resource'
         element.resource.index().then (response) ->
           done()
         , ->
@@ -79,6 +103,125 @@
         element.resource.index().then (response) ->
           expect.fail()
         , ->
+          done()
+        @server.respond()
+
+    describe 'GET /resource with the index method', ->
+
+      it 'retrieves all items', (done) ->
+        element = fixture 'resource'
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "index-request"
+          done()
+        @server.respond()
+
+    describe 'GET /resource/:id with the show method', ->
+
+      it 'retrieves the item with the specified id', (done) ->
+        element = fixture 'resource'
+        element.resource.show(1).then (response) ->
+          expect(response.data).to.eql "show-request"
+          done()
+        @server.respond()
+
+    describe 'GET /resource/new with the new method', ->
+
+      it 'retrieves a new item', (done) ->
+        element = fixture 'resource'
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "index-request"
+          done()
+        @server.respond()
+
+    describe 'POST /resource with the create method', ->
+
+      it 'creates a new item', (done) ->
+        element = fixture 'resource'
+        element.resource.create().then (response) ->
+          expect(response.data).to.eql "create-request"
+          done()
+        @server.respond()
+
+    describe 'PUT /resource/:id with the update method', ->
+
+      it 'updates an existing item', (done) ->
+        element = fixture 'resource'
+        element.resource.update(1).then (response) ->
+          expect(response.data).to.eql "update-request"
+          done()
+        @server.respond()
+
+    describe 'DELETE /resource/:id with the destroy method', ->
+
+      it 'destroys an existing item', (done) ->
+        element = fixture 'resource'
+        element.resource.destroy(1).then (response) ->
+          expect(response.data).to.eql "destroy-request"
+          done()
+        @server.respond()
+
+    describe 'PUT /resource/:id/action with the memberAction method', ->
+
+      it 'calls the member action on the item', (done) ->
+        element = fixture 'resource'
+        element.resource.memberAction(1, 'action').then (response) ->
+          expect(response.data).to.eql "member-request"
+          done()
+        @server.respond()
+
+    describe 'with parameters in the url and specified parameter values', ->
+
+      it 'replaces the parameters in the url', (done) ->
+        element = fixture 'resource-with-url-params'
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "request-with-url-params"
+          done()
+        @server.respond()
+
+    describe 'specifying a special url', ->
+
+      beforeEach ->
+        element = fixture 'resource-with-special-urls'
+
+      it 'accesses the special index URL', (done) ->
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "request-with-special-index-url"
+          done()
+        @server.respond()
+
+      it 'accesses the special show URL', (done) ->
+        element.resource.show().then (response) ->
+          expect(response.data).to.eql "request-with-special-show-url"
+          done()
+        @server.respond()
+
+      it 'accesses the special new URL', (done) ->
+        element.resource.new().then (response) ->
+          expect(response.data).to.eql "request-with-special-new-url"
+          done()
+        @server.respond()
+
+      it 'accesses the special create URL', (done) ->
+        element.resource.create().then (response) ->
+          expect(response.data).to.eql "request-with-special-create-url"
+          done()
+        @server.respond()
+
+      it 'accesses the special update URL', (done) ->
+        element.resource.update().then (response) ->
+          expect(response.data).to.eql "request-with-special-update-url"
+          done()
+        @server.respond()
+
+      it 'accesses the special destroy URL', (done) ->
+        element.resource.destroy().then (response) ->
+          expect(response.data).to.eql "request-with-special-destroy-url"
+          done()
+        @server.respond()
+
+      it 'accesses the special member URL', (done) ->
+        element.resource.memberAction().then (response) ->
+          expect(response.data).to.eql "request-with-special-member-url"
           done()
         @server.respond()
 
