@@ -1,3 +1,13 @@
+<a name="0.1.11"></a>
+### 0.1.11 (2015-09-23)
+
+
+#### Features
+
+* add a baseUrl property for prepending a base url to all requests ([3a1b4928](http://github.com/grappendorf/grapp-rest-resource/commit/3a1b4928c0482c6db6595755968ad71ea8e610b6))
+* properties for adding a query string to the urls ([d2f242ba](http://github.com/grappendorf/grapp-rest-resource/commit/d2f242bade2a1365c96b103f905311143b6cc922))
+
+
 <a name="0.1.10"></a>
 ### 0.1.10 (2015-09-17)
 
