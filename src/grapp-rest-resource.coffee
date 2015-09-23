@@ -78,9 +78,7 @@ Polymer
             @_handleError @request.xhr.response, @request.xhr.status, reject
 
   _prepareUrl: (path, query, params, id, action) ->
-    console.log path
     url = if @baseUrl then @baseUrl + path else path
-    console.log url
     url += '?' + query if query
     params = JSON.parse(params) if typeof(params) == 'string'
     for name, value of params
