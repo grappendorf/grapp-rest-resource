@@ -1,3 +1,12 @@
+<a name="0.1.13"></a>
+### 0.1.13 (2015-09-23)
+
+
+#### Bug Fixes
+
+* rename ...url properties to ...path (browsers seem to like to add the document b ([2b30c3ad](http://github.com/grappendorf/grapp-rest-resource/commit/2b30c3ad1a5f85a981513feff5786c5edd0eb981))
+
+
 <a name="0.1.12"></a>
 ### 0.1.12 (2015-09-23)
 
