@@ -13,64 +13,73 @@ Polymer
     updateUrl: {type: String}
     destroyUrl: {type: String}
     memberUrl: {type: String}
+    queryString: {type: String}
+    indexQueryString: {type: String}
+    showQueryString: {type: String}
+    newQueryString: {type: String}
+    createQueryString: {type: String}
+    updateQueryString: {type: String}
+    destroyQueryString: {type: String}
+    memberQueryString: {type: String}
     headers: {type: Object, value: -> {}}
     token: {type: String},
     request: {type: Object}
 
   ready: ->
-    self = @
-
     @resource =
-      index: ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('GET', self.indexUrl).then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      index: =>
+        new Promise (resolve, reject) =>
+          @_sendRequest('GET', @indexUrl, @indexQueryString).then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-      show: (id) ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('GET', self.showUrl, id).then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      show: (id) =>
+        new Promise (resolve, reject) =>
+          @_sendRequest('GET', @showUrl, @showQueryString, id).then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-      new: () ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('GET', self.newUrl, null, 'new').then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      new: () =>
+        new Promise (resolve, reject) =>
+          @_sendRequest('GET', @newUrl, @newQueryString, null, 'new').then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-      create: (data) ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('POST', self.createUrl, null, data).then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      create: (data) =>
+        new Promise (resolve, reject) =>
+          @_sendRequest('POST', @createUrl, @createQueryString, null, data).then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-      update: (id, data) ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('PUT', self.updateUrl, id, data).then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      update: (id, data) =>
+        new Promise (resolve, reject) =>
+          @_sendRequest('PUT', @updateUrl, @updateQueryString, id, data).then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-      destroy: (id) ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('DELETE', self.destroyUrl, id).then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      destroy: (id) =>
+        new Promise (resolve, reject) =>
+          @_sendRequest('DELETE', @destroyUrl, @destroyQueryString, id).then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-      memberAction: (id, action) ->
-        new Promise (resolve, reject) ->
-          self._sendRequest('PUT', self.memberUrl, id, action).then (request) ->
-            self._handleResponse request.response, request.xhr.status, resolve
-          , ->
-            self._handleError self.request.xhr.response, self.request.xhr.status, reject
+      memberAction: (id, action) =>
+        console.log action
+        new Promise (resolve, reject) =>
+          @_sendRequest('PUT', @memberUrl, @memberQueryString, id, null, action).then (request) =>
+            @_handleResponse request.response, request.xhr.status, resolve
+          , =>
+            @_handleError @request.xhr.response, @request.xhr.status, reject
 
-  _prepareUrl: (url, params, id, action) ->
+  _prepareUrl: (url, queryString, params, id, action) ->
+    console.log action
+    url += '?' + queryString if queryString
     params = JSON.parse(params) if typeof(params) == 'string'
     for name, value of params
       url = url.replace ":#{name}", value
@@ -89,11 +98,11 @@ Polymer
     h['Authorization'] = @token if @token
     h
 
-  _sendRequest: (method, url, id = null, data = null, action = null) ->
+  _sendRequest: (method, url, queryString, id = null, data = null, action = null) ->
     @request = @_createRequestElement()
     @request.send
       method: method
-      url: @_prepareUrl url || @url, @params, id, action
+      url: @_prepareUrl url || @url, queryString || @queryString, @params, id, action
       headers: @_prepareHeaders()
       body: (if data then JSON.stringify data else undefined)
 

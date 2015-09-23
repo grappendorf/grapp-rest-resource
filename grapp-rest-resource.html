@@ -51,6 +51,30 @@ Description: A web component that encapsulates REST API calls
       memberUrl: {
         type: String
       },
+      queryString: {
+        type: String
+      },
+      indexQueryString: {
+        type: String
+      },
+      showQueryString: {
+        type: String
+      },
+      newQueryString: {
+        type: String
+      },
+      createQueryString: {
+        type: String
+      },
+      updateQueryString: {
+        type: String
+      },
+      destroyQueryString: {
+        type: String
+      },
+      memberQueryString: {
+        type: String
+      },
       headers: {
         type: Object,
         value: function() {
@@ -65,76 +89,93 @@ Description: A web component that encapsulates REST API calls
       }
     },
     ready: function() {
-      var self;
-      self = this;
       return this.resource = {
-        index: function() {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('GET', self.indexUrl).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+        index: (function(_this) {
+          return function() {
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('GET', _this.indexUrl, _this.indexQueryString).then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        },
-        show: function(id) {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('GET', self.showUrl, id).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+          };
+        })(this),
+        show: (function(_this) {
+          return function(id) {
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('GET', _this.showUrl, _this.showQueryString, id).then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        },
-        "new": function() {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('GET', self.newUrl, null, 'new').then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+          };
+        })(this),
+        "new": (function(_this) {
+          return function() {
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('GET', _this.newUrl, _this.newQueryString, null, 'new').then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        },
-        create: function(data) {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('POST', self.createUrl, null, data).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+          };
+        })(this),
+        create: (function(_this) {
+          return function(data) {
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('POST', _this.createUrl, _this.createQueryString, null, data).then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        },
-        update: function(id, data) {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('PUT', self.updateUrl, id, data).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+          };
+        })(this),
+        update: (function(_this) {
+          return function(id, data) {
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('PUT', _this.updateUrl, _this.updateQueryString, id, data).then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        },
-        destroy: function(id) {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('DELETE', self.destroyUrl, id).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+          };
+        })(this),
+        destroy: (function(_this) {
+          return function(id) {
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('DELETE', _this.destroyUrl, _this.destroyQueryString, id).then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        },
-        memberAction: function(id, action) {
-          return new Promise(function(resolve, reject) {
-            return self._sendRequest('PUT', self.memberUrl, id, action).then(function(request) {
-              return self._handleResponse(request.response, request.xhr.status, resolve);
-            }, function() {
-              return self._handleError(self.request.xhr.response, self.request.xhr.status, reject);
+          };
+        })(this),
+        memberAction: (function(_this) {
+          return function(id, action) {
+            console.log(action);
+            return new Promise(function(resolve, reject) {
+              return _this._sendRequest('PUT', _this.memberUrl, _this.memberQueryString, id, null, action).then(function(request) {
+                return _this._handleResponse(request.response, request.xhr.status, resolve);
+              }, function() {
+                return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
+              });
             });
-          });
-        }
+          };
+        })(this)
       };
     },
-    _prepareUrl: function(url, params, id, action) {
+    _prepareUrl: function(url, queryString, params, id, action) {
       var name, value;
+      console.log(action);
+      if (queryString) {
+        url += '?' + queryString;
+      }
       if (typeof params === 'string') {
         params = JSON.parse(params);
       }
@@ -167,7 +208,7 @@ Description: A web component that encapsulates REST API calls
       }
       return h;
     },
-    _sendRequest: function(method, url, id, data, action) {
+    _sendRequest: function(method, url, queryString, id, data, action) {
       if (id == null) {
         id = null;
       }
@@ -180,7 +221,7 @@ Description: A web component that encapsulates REST API calls
       this.request = this._createRequestElement();
       return this.request.send({
         method: method,
-        url: this._prepareUrl(url || this.url, this.params, id, action),
+        url: this._prepareUrl(url || this.url, queryString || this.queryString, this.params, id, action),
         headers: this._prepareHeaders(),
         body: (data ? JSON.stringify(data) : void 0)
       });

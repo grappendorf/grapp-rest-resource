@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>grapp-rest-resource basic tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <script src='../lib/webcomponentsjs/webcomponents-lite.min.js'></script>
+  <script src="../lib/web-component-tester/browser.js"></script>
+  <script src="../lib/test-fixture/test-fixture-mocha.js"></script>
+  <script src="../lib/coffee-script/extras/coffee-script.js"></script>
+  <link rel="import" href="../lib/test-fixture/test-fixture.html">
+  <link rel="import" href="../build/grapp-rest-resource.html">
+</head>
+
+<body>
+
+  <test-fixture id="resource-with-query-string">
+    <template>
+      <grapp-rest-resource url="/data" query-string="type=general"></grapp-rest-resource>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="resource-with-query-string-and-params">
+    <template>
+      <grapp-rest-resource url="/data" query-string="pos=:index" params='{"index":42}'></grapp-rest-resource>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="resource-with-special-query-strings">
+    <template>
+      <grapp-rest-resource url="/data" query-string="type=general"
+                           index-query-string="type=index"
+                           show-query-string="type=show"
+                           new-query-string="type=new"
+                           create-query-string="type=create"
+                           update-query-string="type=update"
+                           destroy-query-string="type=destroy"
+                           member-query-string="type=member">
+      </grapp-rest-resource>
+    </template>
+  </test-fixture>
+
+  <script type="text/coffeescript">
+
+    element = null
+
+    before ->
+      @server = sinon.fakeServer.create()
+      @server.respondWith 'GET', '/data?type=general', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-query-string"'
+      @server.respondWith 'GET', '/data?type=index', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-index-query-string"'
+      @server.respondWith 'GET', '/data?type=show', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-show-query-string"'
+      @server.respondWith 'GET', '/data?type=new', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-new-query-string"'
+      @server.respondWith 'POST', '/data?type=create', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-create-query-string"'
+      @server.respondWith 'PUT', '/data?type=update', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-update-query-string"'
+      @server.respondWith 'DELETE', '/data?type=destroy', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-destroy-query-string"'
+      @server.respondWith 'PUT', '/data?type=member', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-member-query-string"'
+      @server.respondWith 'GET', '/data?pos=42', (request) ->
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-query-string-and-params"'
+
+    describe 'specifying a general query string', ->
+
+      it 'appends the general query string', (done) ->
+        element = fixture 'resource-with-query-string'
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "request-with-query-string"
+          done()
+        @server.respond()
+
+    describe 'with parameters in the query string and specified parameter values', ->
+
+      it 'replaces the parameters in the query string', (done) ->
+        element = fixture 'resource-with-query-string-and-params'
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "request-with-query-string-and-params"
+          done()
+        @server.respond()
+
+    describe 'specifying a special query string', ->
+
+      beforeEach ->
+        element = fixture 'resource-with-special-query-strings'
+
+      it 'appends a special query string for the index method', (done) ->
+        element.resource.index().then (response) ->
+          expect(response.data).to.eql "request-with-special-index-query-string"
+          done()
+        @server.respond()
+
+      it 'appends a special query string for the show method', (done) ->
+        element.resource.show().then (response) ->
+          expect(response.data).to.eql "request-with-special-show-query-string"
+          done()
+        @server.respond()
+
+      it 'appends a special query string for the new method', (done) ->
+        element.resource.new().then (response) ->
+          expect(response.data).to.eql "request-with-special-new-query-string"
+          done()
+        @server.respond()
+
+      it 'appends a special query string for the create method', (done) ->
+        element.resource.create().then (response) ->
+          expect(response.data).to.eql "request-with-special-create-query-string"
+          done()
+        @server.respond()
+
+      it 'appends a special query string for the update method', (done) ->
+        element.resource.update().then (response) ->
+          expect(response.data).to.eql "request-with-special-update-query-string"
+          done()
+        @server.respond()
+
+      it 'appends a special query string for the destroy method', (done) ->
+        element.resource.destroy().then (response) ->
+          expect(response.data).to.eql "request-with-special-destroy-query-string"
+          done()
+        @server.respond()
+
+      it 'appends a special query string for the member method', (done) ->
+        element.resource.memberAction().then (response) ->
+          expect(response.data).to.eql "request-with-special-member-query-string"
+          done()
+        @server.respond()
+
+  </script>
+
+</body>
+</html>
