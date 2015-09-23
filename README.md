@@ -92,49 +92,49 @@ Properties
 
     Use this URL instead of the default one for "PUT /resources/:id/action" requests.
 
-  * **queryString**
+  * **query**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the general url. 
 
-  * **indexQueryString**
+  * **indexQuery**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the indexUrl. 
 
-  * **showQueryString**
+  * **showQuery**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the showUrl. 
 
-  * **newQueryString**
+  * **newQuery**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the newUrl. 
 
-  * **createQueryString**
+  * **createQuery**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the createUrl. 
 
-  * **updateQueryString**
+  * **updateQuery**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the updateUrl. 
 
-  * **destroyQueryString**
+  * **destroyQuery**
 
     - *type:* string
 
     A query string (without the '?') that is appended to the destroyUrl. 
 
-  * **memberQueryString**
+  * **memberQuery**
 
     - *type:* string
 

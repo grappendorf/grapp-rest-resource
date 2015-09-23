@@ -15,28 +15,28 @@
 
 <body>
 
-  <test-fixture id="resource-with-query-string">
+  <test-fixture id="resource-with-query">
     <template>
-      <grapp-rest-resource url="/data" query-string="type=general"></grapp-rest-resource>
+      <grapp-rest-resource url="/data" query="type=general"></grapp-rest-resource>
     </template>
   </test-fixture>
 
-  <test-fixture id="resource-with-query-string-and-params">
+  <test-fixture id="resource-with-query-and-params">
     <template>
-      <grapp-rest-resource url="/data" query-string="pos=:index" params='{"index":42}'></grapp-rest-resource>
+      <grapp-rest-resource url="/data" query="pos=:index" params='{"index":42}'></grapp-rest-resource>
     </template>
   </test-fixture>
 
-  <test-fixture id="resource-with-special-query-strings">
+  <test-fixture id="resource-with-special-querys">
     <template>
-      <grapp-rest-resource url="/data" query-string="type=general"
-                           index-query-string="type=index"
-                           show-query-string="type=show"
-                           new-query-string="type=new"
-                           create-query-string="type=create"
-                           update-query-string="type=update"
-                           destroy-query-string="type=destroy"
-                           member-query-string="type=member">
+      <grapp-rest-resource url="/data" query="type=general"
+                           index-query="type=index"
+                           show-query="type=show"
+                           new-query="type=new"
+                           create-query="type=create"
+                           update-query="type=update"
+                           destroy-query="type=destroy"
+                           member-query="type=member">
       </grapp-rest-resource>
     </template>
   </test-fixture>
@@ -48,86 +48,86 @@
     before ->
       @server = sinon.fakeServer.create()
       @server.respondWith 'GET', '/data?type=general', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-query"'
       @server.respondWith 'GET', '/data?type=index', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-index-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-index-query"'
       @server.respondWith 'GET', '/data?type=show', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-show-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-show-query"'
       @server.respondWith 'GET', '/data?type=new', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-new-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-new-query"'
       @server.respondWith 'POST', '/data?type=create', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-create-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-create-query"'
       @server.respondWith 'PUT', '/data?type=update', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-update-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-update-query"'
       @server.respondWith 'DELETE', '/data?type=destroy', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-destroy-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-destroy-query"'
       @server.respondWith 'PUT', '/data?type=member', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-member-query-string"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-member-query"'
       @server.respondWith 'GET', '/data?pos=42', (request) ->
-        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-query-string-and-params"'
+        request.respond 200, {'Content-Type': 'application/json'}, '"request-with-query-and-params"'
 
     describe 'specifying a general query string', ->
 
       it 'appends the general query string', (done) ->
-        element = fixture 'resource-with-query-string'
+        element = fixture 'resource-with-query'
         element.resource.index().then (response) ->
-          expect(response.data).to.eql "request-with-query-string"
+          expect(response.data).to.eql "request-with-query"
           done()
         @server.respond()
 
     describe 'with parameters in the query string and specified parameter values', ->
 
       it 'replaces the parameters in the query string', (done) ->
-        element = fixture 'resource-with-query-string-and-params'
+        element = fixture 'resource-with-query-and-params'
         element.resource.index().then (response) ->
-          expect(response.data).to.eql "request-with-query-string-and-params"
+          expect(response.data).to.eql "request-with-query-and-params"
           done()
         @server.respond()
 
     describe 'specifying a special query string', ->
 
       beforeEach ->
-        element = fixture 'resource-with-special-query-strings'
+        element = fixture 'resource-with-special-querys'
 
       it 'appends a special query string for the index method', (done) ->
         element.resource.index().then (response) ->
-          expect(response.data).to.eql "request-with-special-index-query-string"
+          expect(response.data).to.eql "request-with-special-index-query"
           done()
         @server.respond()
 
       it 'appends a special query string for the show method', (done) ->
         element.resource.show().then (response) ->
-          expect(response.data).to.eql "request-with-special-show-query-string"
+          expect(response.data).to.eql "request-with-special-show-query"
           done()
         @server.respond()
 
       it 'appends a special query string for the new method', (done) ->
         element.resource.new().then (response) ->
-          expect(response.data).to.eql "request-with-special-new-query-string"
+          expect(response.data).to.eql "request-with-special-new-query"
           done()
         @server.respond()
 
       it 'appends a special query string for the create method', (done) ->
         element.resource.create().then (response) ->
-          expect(response.data).to.eql "request-with-special-create-query-string"
+          expect(response.data).to.eql "request-with-special-create-query"
           done()
         @server.respond()
 
       it 'appends a special query string for the update method', (done) ->
         element.resource.update().then (response) ->
-          expect(response.data).to.eql "request-with-special-update-query-string"
+          expect(response.data).to.eql "request-with-special-update-query"
           done()
         @server.respond()
 
       it 'appends a special query string for the destroy method', (done) ->
         element.resource.destroy().then (response) ->
-          expect(response.data).to.eql "request-with-special-destroy-query-string"
+          expect(response.data).to.eql "request-with-special-destroy-query"
           done()
         @server.respond()
 
       it 'appends a special query string for the member method', (done) ->
         element.resource.memberAction().then (response) ->
-          expect(response.data).to.eql "request-with-special-member-query-string"
+          expect(response.data).to.eql "request-with-special-member-query"
           done()
         @server.respond()
 

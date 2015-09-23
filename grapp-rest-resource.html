@@ -54,28 +54,28 @@ Description: A web component that encapsulates REST API calls
       memberUrl: {
         type: String
       },
-      queryString: {
+      query: {
         type: String
       },
-      indexQueryString: {
+      indexQuery: {
         type: String
       },
-      showQueryString: {
+      showQuery: {
         type: String
       },
-      newQueryString: {
+      newQuery: {
         type: String
       },
-      createQueryString: {
+      createQuery: {
         type: String
       },
-      updateQueryString: {
+      updateQuery: {
         type: String
       },
-      destroyQueryString: {
+      destroyQuery: {
         type: String
       },
-      memberQueryString: {
+      memberQuery: {
         type: String
       },
       headers: {
@@ -96,7 +96,7 @@ Description: A web component that encapsulates REST API calls
         index: (function(_this) {
           return function() {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.indexUrl, _this.indexQueryString).then(function(request) {
+              return _this._sendRequest('GET', _this.indexUrl, _this.indexQuery).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -107,7 +107,7 @@ Description: A web component that encapsulates REST API calls
         show: (function(_this) {
           return function(id) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.showUrl, _this.showQueryString, id).then(function(request) {
+              return _this._sendRequest('GET', _this.showUrl, _this.showQuery, id).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -118,7 +118,7 @@ Description: A web component that encapsulates REST API calls
         "new": (function(_this) {
           return function() {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.newUrl, _this.newQueryString, null, 'new').then(function(request) {
+              return _this._sendRequest('GET', _this.newUrl, _this.newQuery, null, 'new').then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -129,7 +129,7 @@ Description: A web component that encapsulates REST API calls
         create: (function(_this) {
           return function(data) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('POST', _this.createUrl, _this.createQueryString, null, data).then(function(request) {
+              return _this._sendRequest('POST', _this.createUrl, _this.createQuery, null, data).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -140,7 +140,7 @@ Description: A web component that encapsulates REST API calls
         update: (function(_this) {
           return function(id, data) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('PUT', _this.updateUrl, _this.updateQueryString, id, data).then(function(request) {
+              return _this._sendRequest('PUT', _this.updateUrl, _this.updateQuery, id, data).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -151,7 +151,7 @@ Description: A web component that encapsulates REST API calls
         destroy: (function(_this) {
           return function(id) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('DELETE', _this.destroyUrl, _this.destroyQueryString, id).then(function(request) {
+              return _this._sendRequest('DELETE', _this.destroyUrl, _this.destroyQuery, id).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -162,7 +162,7 @@ Description: A web component that encapsulates REST API calls
         memberAction: (function(_this) {
           return function(id, action) {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('PUT', _this.memberUrl, _this.memberQueryString, id, null, action).then(function(request) {
+              return _this._sendRequest('PUT', _this.memberUrl, _this.memberQuery, id, null, action).then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);
@@ -172,13 +172,13 @@ Description: A web component that encapsulates REST API calls
         })(this)
       };
     },
-    _prepareUrl: function(url, queryString, params, id, action) {
+    _prepareUrl: function(url, query, params, id, action) {
       var name, value;
       if (this.baseUrl) {
         url = this.baseUrl + url;
       }
-      if (queryString) {
-        url += '?' + queryString;
+      if (query) {
+        url += '?' + query;
       }
       if (typeof params === 'string') {
         params = JSON.parse(params);
@@ -212,7 +212,7 @@ Description: A web component that encapsulates REST API calls
       }
       return h;
     },
-    _sendRequest: function(method, url, queryString, id, data, action) {
+    _sendRequest: function(method, url, query, id, data, action) {
       if (id == null) {
         id = null;
       }
@@ -225,7 +225,7 @@ Description: A web component that encapsulates REST API calls
       this.request = this._createRequestElement();
       return this.request.send({
         method: method,
-        url: this._prepareUrl(url || this.url, queryString || this.queryString, this.params, id, action),
+        url: this._prepareUrl(url || this.url, query || this.query, this.params, id, action),
         headers: this._prepareHeaders(),
         body: (data ? JSON.stringify(data) : void 0)
       });
