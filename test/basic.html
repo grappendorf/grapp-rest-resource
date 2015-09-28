@@ -83,7 +83,7 @@
           [200, {'Content-Type': 'application/json'}, '"request-with-special-index-path"']
       @server.respondWith 'GET', '/special_show_path',
           [200, {'Content-Type': 'application/json'}, '"request-with-special-show-path"']
-      @server.respondWith 'GET', '/special_new_path',
+      @server.respondWith 'GET', '/special_new_path/new',
           [200, {'Content-Type': 'application/json'}, '"request-with-special-new-path"']
       @server.respondWith 'POST', '/special_create_path',
           [200, {'Content-Type': 'application/json'}, '"request-with-special-create-path"']

@@ -118,7 +118,7 @@ Description: A web component that encapsulates REST API calls
         "new": (function(_this) {
           return function() {
             return new Promise(function(resolve, reject) {
-              return _this._sendRequest('GET', _this.newPath, _this.newQuery, null, 'new').then(function(request) {
+              return _this._sendRequest('GET', _this.newPath, _this.newQuery, null, null, 'new').then(function(request) {
                 return _this._handleResponse(request.response, request.xhr.status, resolve);
               }, function() {
                 return _this._handleError(_this.request.xhr.response, _this.request.xhr.status, reject);

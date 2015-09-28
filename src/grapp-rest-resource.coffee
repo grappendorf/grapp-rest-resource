@@ -44,7 +44,7 @@ Polymer
 
       new: () =>
         new Promise (resolve, reject) =>
-          @_sendRequest('GET', @newPath, @newQuery, null, 'new').then (request) =>
+          @_sendRequest('GET', @newPath, @newQuery, null, null, 'new').then (request) =>
             @_handleResponse request.response, request.xhr.status, resolve
           , =>
             @_handleError @request.xhr.response, @request.xhr.status, reject
