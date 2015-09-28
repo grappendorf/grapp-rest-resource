@@ -1,3 +1,13 @@
+<a name="0.1.15"></a>
+### 0.1.15 (2015-09-29)
+
+
+#### Bug Fixes
+
+* the query string is not appended to the end of the url if an action is specified ([fa19188a](http://github.com/grappendorf/grapp-rest-resource/commit/fa19188ab6fc5b2bbf1c7d284f61d7df3f9647a9))
+* 'new' is not passed as the action to _sendRequest() in new() ([70b6dd5c](http://github.com/grappendorf/grapp-rest-resource/commit/70b6dd5c32fdc8f0e1592cf3406f572d559f38b1))
+
+
 <a name="0.1.14"></a>
 ### 0.1.14 (2015-09-23)
 
