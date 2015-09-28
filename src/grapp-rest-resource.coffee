@@ -79,16 +79,16 @@ Polymer
 
   _prepareUrl: (path, query, params, id, action) ->
     url = if @baseUrl then @baseUrl + path else path
-    url += '?' + query if query
     params = JSON.parse(params) if typeof(params) == 'string'
+    if action
+      url += "/#{action}"
+    url += '?' + query if query
     for name, value of params
       url = url.replace ":#{name}", value
     url = url.replace ':id', id || ''
     url = url.replace /\/\/+/g, '/'
     url = url.replace /^(\w+):\//, '$1://'
     url = url.replace /\/$/, ''
-    if action
-      url += "/#{action}"
     url
 
   _prepareHeaders: ->

@@ -175,11 +175,14 @@ Description: A web component that encapsulates REST API calls
     _prepareUrl: function(path, query, params, id, action) {
       var name, url, value;
       url = this.baseUrl ? this.baseUrl + path : path;
-      if (query) {
-        url += '?' + query;
-      }
       if (typeof params === 'string') {
         params = JSON.parse(params);
+      }
+      if (action) {
+        url += "/" + action;
+      }
+      if (query) {
+        url += '?' + query;
       }
       for (name in params) {
         value = params[name];
@@ -189,9 +192,6 @@ Description: A web component that encapsulates REST API calls
       url = url.replace(/\/\/+/g, '/');
       url = url.replace(/^(\w+):\//, '$1://');
       url = url.replace(/\/$/, '');
-      if (action) {
-        url += "/" + action;
-      }
       return url;
     },
     _prepareHeaders: function() {

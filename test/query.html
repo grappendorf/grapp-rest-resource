@@ -53,7 +53,7 @@
         request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-index-query"'
       @server.respondWith 'GET', '/data?type=show', (request) ->
         request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-show-query"'
-      @server.respondWith 'GET', '/data?type=new', (request) ->
+      @server.respondWith 'GET', '/data/new?type=new', (request) ->
         request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-new-query"'
       @server.respondWith 'POST', '/data?type=create', (request) ->
         request.respond 200, {'Content-Type': 'application/json'}, '"request-with-special-create-query"'
