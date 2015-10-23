@@ -1,3 +1,12 @@
+<a name="0.1.16"></a>
+### 0.1.16 (2015-10-24)
+
+
+#### Bug Fixes
+
+* iron-request now expects headers to be lower case ([a24ab930](http://github.com/grappendorf/grapp-rest-resource/commit/a24ab9303aaea46057186e6ec9034ed11f4445cd))
+
+
 <a name="0.1.15"></a>
 ### 0.1.15 (2015-09-29)
 
