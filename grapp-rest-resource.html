@@ -197,8 +197,8 @@ Description: A web component that encapsulates REST API calls
     _prepareHeaders: function() {
       var h, key, ref, val;
       h = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'accept': 'application/json',
+        'content-type': 'application/json'
       };
       ref = this.headers;
       for (key in ref) {
@@ -206,7 +206,7 @@ Description: A web component that encapsulates REST API calls
         h[key] = val;
       }
       if (this.token) {
-        h['Authorization'] = this.token;
+        h['authorization'] = this.token;
       }
       return h;
     },

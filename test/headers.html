@@ -39,11 +39,11 @@
       @server = sinon.fakeServer.create()
       @server.respondWith 'GET', '/data', (request) ->
         if request.requestHeaders['foo'] == 123
-          request.respond 200, {'Content-Type': 'application/json'}, '"request-with-headers"'
-        else if request.requestHeaders['Authorization'] == 'JWT'
-          request.respond 200, {'Content-Type': 'application/json'}, '"request-with-token"'
-        else if request.requestHeaders['Accept'] == 'application/json' && request.requestHeaders['Content-Type'] == 'application/json'
-          request.respond 200, {'Content-Type': 'application/json'}, '"simple-request"'
+          request.respond 200, {'content-type': 'application/json'}, '"request-with-headers"'
+        else if request.requestHeaders['authorization'] == 'JWT'
+          request.respond 200, {'content-type': 'application/json'}, '"request-with-token"'
+        else if request.requestHeaders['accept'] == 'application/json' && request.requestHeaders['content-type'] == 'application/json'
+          request.respond 200, {'content-type': 'application/json'}, '"simple-request"'
 
       describe 'default hedaers', ->
 

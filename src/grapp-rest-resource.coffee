@@ -92,10 +92,10 @@ Polymer
     url
 
   _prepareHeaders: ->
-    h = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    h = {'accept': 'application/json', 'content-type': 'application/json'}
     for key, val of @headers
       h[key] = val
-    h['Authorization'] = @token if @token
+    h['authorization'] = @token if @token
     h
 
   _sendRequest: (method, path, query, id = null, data = null, action = null) ->
