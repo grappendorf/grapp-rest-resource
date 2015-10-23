@@ -60,7 +60,7 @@
     before ->
       @server = sinon.fakeServer.create()
       @server.respondWith 'GET', '/unknown_resource',
-          [404, {}, '"unknown-request']
+          [404, {}, '"unknown-resource"']
       @server.respondWith 'GET', '/data',
           [200, {'Content-Type': 'application/json'}, '"index-request"']
       @server.respondWith 'GET', '/data/1',
